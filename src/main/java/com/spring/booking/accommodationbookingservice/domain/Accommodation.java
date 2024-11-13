@@ -50,6 +50,6 @@ public class Accommodation {
     private BigDecimal dailyRate;
     @Column(nullable = false)
     private Integer availability;
-    @Column(columnDefinition = "tinyint(1) default 0", nullable = false)
+    @Column(nullable = false)
     private boolean isDeleted = false;
 }

@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 09-create-payments-table
+      id: create-payments-table
       author: Mykhailo Kornukh
       changes:
         - createTable:

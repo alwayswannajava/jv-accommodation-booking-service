@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 03-create-amenities-table
+      id: create-amenities-table
       author: Mykhailo Kornukh
       changes:
         - createTable:

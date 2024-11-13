@@ -33,6 +33,6 @@ public class Booking {
     private Long userId;
     @Enumerated(EnumType.STRING)
     private Status status;
-    @Column(columnDefinition = "tinyint(1) default 0", nullable = false)
+    @Column(nullable = false)
     private boolean isDeleted = false;
 }

@@ -34,6 +34,6 @@ public class Payment {
     @Column(nullable = false, unique = true)
     private String sessionId;
     private BigDecimal amountToPay;
-    @Column(columnDefinition = "tinyint(1) default 0", nullable = false)
+    @Column(nullable = false)
     private boolean isDeleted = false;
 }

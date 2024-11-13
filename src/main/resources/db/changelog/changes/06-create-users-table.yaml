@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 08-create-users-table
+      id: create-users-table
       author: Mykhailo Kornukh
       changes:
         - createTable:
