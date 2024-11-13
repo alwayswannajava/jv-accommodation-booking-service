@@ -22,6 +22,4 @@ public class Location {
     @Column(nullable = false)
     private String city;
     private String postalCode;
-    @Column(columnDefinition = "tinyint(1) default 0", nullable = false)
-    private boolean isDeleted = false;
 }

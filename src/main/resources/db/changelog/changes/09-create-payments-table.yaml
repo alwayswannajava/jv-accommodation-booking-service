@@ -43,10 +43,10 @@ databaseChangeLog:
                   type: boolean
                   constraints:
                     nullable: false
-            foreignKeys:
-              - foreignKeyConstraint:
-                  baseColumnNames: booking_id
-                  baseTableName: payments
-                  constraintName: fk_booking_id
-                  referencedColumnNames: id
-                  referencedTableName: bookings
+foreignKeys:
+  - foreignKeyConstraint:
+      baseColumnNames: booking_id
+      baseTableName: payments
+      constraintName: fk_booking_id
+      referencedColumnNames: id
+      referencedTableName: bookings

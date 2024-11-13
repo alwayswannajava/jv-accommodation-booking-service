@@ -44,16 +44,16 @@ databaseChangeLog:
                   defaultValueBoolean: false
                   constraints:
                     nullable: false
-            foreignKeys:
-              - foreignKeyConstraint:
-                  baseColumnNames: accommodation_id
-                  baseTableName: bookings
-                  constraintName: fk_accommodation_id
-                  referencedColumnNames: id
-                  referencedTableName: accommodations
-              - foreignKeyConstraint:
-                  baseColumnNames: user_id
-                  baseTableName: bookings
-                  constraintName: fk_user_id
-                  referencedColumnNames: id
-                  referencedTableName: users
+foreignKeys:
+  - foreignKeyConstraint:
+      baseColumnNames: accommodation_id
+      baseTableName: bookings
+      constraintName: fk_accommodation_id
+      referencedColumnNames: id
+      referencedTableName: accommodations
+  - foreignKeyConstraint:
+      baseColumnNames: user_id
+      baseTableName: bookings
+      constraintName: fk_user_id
+      referencedColumnNames: id
+      referencedTableName: users
