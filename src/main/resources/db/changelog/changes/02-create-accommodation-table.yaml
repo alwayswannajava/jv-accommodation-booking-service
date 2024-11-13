@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 01-create-accommodations-table
+      id: create-accommodations-table
       author: Mykhailo Kornukh
       changes:
         - createTable:

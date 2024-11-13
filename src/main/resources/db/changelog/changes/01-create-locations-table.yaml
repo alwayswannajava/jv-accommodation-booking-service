@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 02-create-locations-table
+      id: create-locations-table
       author: Mykhailo Kornukh
       changes:
         - createTable:

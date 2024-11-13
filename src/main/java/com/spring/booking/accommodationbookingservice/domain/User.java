@@ -45,8 +45,7 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
-
-    @Column(columnDefinition = "tinyint(1) default 0", nullable = false)
+    @Column(nullable = false)
     private boolean isDeleted = false;
 
     @Override

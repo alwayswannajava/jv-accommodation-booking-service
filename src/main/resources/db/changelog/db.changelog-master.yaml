@@ -10,10 +10,10 @@ databaseChangeLog:
   - include:
       file: db/changelog/changes/05-create-accommodations-amenities-table.yaml
   - include:
-      file: db/changelog/changes/06-create-booking-table.yaml
+      file: db/changelog/changes/06-create-users-table.yaml
   - include:
-      file: db/changelog/changes/07-create-users-roles-table.yaml
+      file: db/changelog/changes/07-create-booking-table.yaml
   - include:
-      file: db/changelog/changes/08-create-users-table.yaml
+      file: db/changelog/changes/08-create-users-roles-table.yaml
   - include:
       file: db/changelog/changes/09-create-payments-table.yaml

@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 05-create-accommodation-amenity-table
+      id: create-accommodation-amenity-table
       author: Mykhailo Kornukh
       changes:
         - createTable:

@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 06-create-bookings-table
+      id: create-bookings-table
       author: Mykhailo Kornukh
       changes:
         - createTable:
