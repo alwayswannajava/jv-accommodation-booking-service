@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 05-create-accommodation-amenity-table
+      author: Mykhailo Kornukh
+      changes:
+        - createTable:
+            tableName: accommodation_amenities
+            columns:
+              - column:
+                  name: accommodation_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amenity_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+      foreignKeys:
+        - foreignKeyConstraint:
+            baseColumnNames: accommodation_id
+            baseTableName: accommodation_amenities
+            constraintName: fk_accommodation_id
+            referencedColumnNames: id
+            referencedTableName: accommodations
+        - foreignKeyConstraint:
+            baseColumnNames: amenity_id
+            baseTableName: accommodation_amenities
+            constraintName: fk_amenity_id
+            referencedColumnNames: id
+            referencedTableName: amenities
