@@ -42,7 +42,7 @@ public class Accommodation {
     @Column(nullable = false)
     private String size;
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "accommodation_amenity",
+    @JoinTable(name = "accommodations_amenities",
             joinColumns = @JoinColumn(name = "accommodation_id"),
             inverseJoinColumns = @JoinColumn(name = "amenity_id"))
     private List<Amenity> amenities = new ArrayList<>();
