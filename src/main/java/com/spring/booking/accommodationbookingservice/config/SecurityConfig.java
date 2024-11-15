@@ -1,9 +1,7 @@
 package com.spring.booking.accommodationbookingservice.config;
 
 import com.spring.booking.accommodationbookingservice.security.JwtAuthenticationFilter;
-import com.spring.booking.accommodationbookingservice.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -29,7 +27,6 @@ public class SecurityConfig {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

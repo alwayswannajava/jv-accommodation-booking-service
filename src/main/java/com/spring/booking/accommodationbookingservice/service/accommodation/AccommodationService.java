@@ -13,7 +13,8 @@ public interface AccommodationService {
 
     AccommodationResponse findById(Long accommodationId);
 
-    AccommodationResponse update(AccommodationUpdateRequestDto updateRequestDto, Long accommodationId);
+    AccommodationResponse update(AccommodationUpdateRequestDto updateRequestDto,
+                                 Long accommodationId);
 
     void deleteById(Long accommodationId);
 }
