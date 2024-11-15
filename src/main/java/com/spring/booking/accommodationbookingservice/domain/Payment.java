@@ -8,6 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -22,12 +23,10 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("is_deleted = false")
 @Getter
 @Setter
-public class Payment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Payment extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
+    @JoinColumn(name = "booking_id")
     private Long bookingId;
     @Column(nullable = false, unique = true)
     private URL sessionUrl;

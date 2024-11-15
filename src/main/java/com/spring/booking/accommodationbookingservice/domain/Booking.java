@@ -8,6 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import lombok.Getter;
@@ -21,15 +22,12 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("is_deleted = false")
 @Getter
 @Setter
-public class Booking {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Booking extends BaseEntity {
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
-    @Column(unique = true, nullable = false)
+    @JoinColumn(name = "accommodation_id")
     private Long accommodationId;
-    @Column(unique = true, nullable = false)
+    @JoinColumn(name = "user_id")
     private Long userId;
     @Enumerated(EnumType.STRING)
     private Status status;

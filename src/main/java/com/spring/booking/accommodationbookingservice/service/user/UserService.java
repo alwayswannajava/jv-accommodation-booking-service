@@ -1,4 +1,4 @@
-package com.spring.booking.accommodationbookingservice.service;
+package com.spring.booking.accommodationbookingservice.service.user;
 
 import com.spring.booking.accommodationbookingservice.dto.role.RoleUpdateRequestDto;
 import com.spring.booking.accommodationbookingservice.dto.user.UserRegistrationRequestDto;

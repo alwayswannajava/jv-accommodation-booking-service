@@ -1,4 +1,4 @@
-package com.spring.booking.accommodationbookingservice.service;
+package com.spring.booking.accommodationbookingservice.service.user;
 
 import com.spring.booking.accommodationbookingservice.domain.Role;
 import com.spring.booking.accommodationbookingservice.domain.User;
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
         user.setRoles(Set.of(userRole));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return userMapper.toUserResponse(user);
+        return userMapper.toResponse(user);
     }
 
     @Override
@@ -48,12 +48,12 @@ public class UserServiceImpl implements UserService {
                         + userId
                         + " not found")
         );
-        return userMapper.toUserResponse(user);
+        return userMapper.toResponse(user);
     }
 
     @Override
     public UserResponse getUserInfo(Long userId) {
-        return userMapper.toUserResponse(userRepository.findById(userId).get());
+        return userMapper.toResponse(userRepository.findById(userId).get());
     }
 
     @Override
@@ -61,6 +61,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId).get();
         User updatedUser = userMapper.toUser(user, updateRequestDto);
         userRepository.save(updatedUser);
-        return userMapper.toUserResponse(updatedUser);
+        return userMapper.toResponse(updatedUser);
     }
 }

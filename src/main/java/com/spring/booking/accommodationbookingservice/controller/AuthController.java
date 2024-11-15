@@ -6,7 +6,7 @@ import com.spring.booking.accommodationbookingservice.dto.user.UserRegistrationR
 import com.spring.booking.accommodationbookingservice.dto.user.UserResponse;
 import com.spring.booking.accommodationbookingservice.exception.RegistrationException;
 import com.spring.booking.accommodationbookingservice.security.AuthenticationService;
-import com.spring.booking.accommodationbookingservice.service.UserService;
+import com.spring.booking.accommodationbookingservice.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -28,7 +28,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    @Tag(name = "post", description = "POST methods of Book APIs")
+    @Tag(name = "post", description = "POST methods of Accommodation APIs")
     @Operation(summary = "Registration new user", description = "Registration new user")
     public UserResponse registration(@RequestBody
                                      @Valid
@@ -38,7 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    @Tag(name = "post", description = "POST methods of Book APIs")
+    @Tag(name = "post", description = "POST methods of Accommodation APIs")
     @Operation(summary = "Login user", description = "Login user")
     public UserLoginResponse login(@RequestBody @Valid UserLoginRequestDto userLoginRequestDto) {
         return authenticationService.authenticate(userLoginRequestDto);

@@ -1,9 +1,12 @@
 package com.spring.booking.accommodationbookingservice.config;
 
 import com.spring.booking.accommodationbookingservice.security.JwtAuthenticationFilter;
+import com.spring.booking.accommodationbookingservice.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -27,13 +30,16 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/auth/**",
+                        auth.requestMatchers(HttpMethod.GET, "/accommodations/**")
+                                .permitAll()
+                                .requestMatchers("/auth/**",
                                         "/swagger-ui/**", "/api-docs/**")
                                 .permitAll()
                                 .anyRequest()
@@ -44,6 +50,7 @@ public class SecurityConfig {
                         UsernamePasswordAuthenticationFilter.class)
                 .userDetailsService(userDetailsService)
                 .build();
+
     }
 
     @Bean
