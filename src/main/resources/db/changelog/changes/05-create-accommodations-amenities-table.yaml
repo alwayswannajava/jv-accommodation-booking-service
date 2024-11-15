@@ -29,3 +29,5 @@ foreignKeys:
       constraintName: fk_amenity_id
       referencedColumnNames: id
       referencedTableName: amenities
+      onDelete: CASCADE
+      onUpdate: CASCADE

@@ -13,7 +13,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapperConfig.class)
 public interface UserMapper {
-    UserResponse toUserResponse(User user);
+    UserResponse toResponse(User user);
 
     User toUser(UserRegistrationRequestDto userRegistrationRequestDto);
 
