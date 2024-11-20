@@ -9,12 +9,12 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = FieldMatchValidator.class)
-public @interface FieldMatch {
-    String message() default "{FieldMatch.message}";
+@Constraint(validatedBy = PasswordMatchValidator.class)
+public @interface PasswordMatch {
+    String message() default "{PasswordMatch.message}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 
-    String firstField();
-    String secondField();
+    String password();
+    String repeatPassword();
 }
