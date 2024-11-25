@@ -3,6 +3,7 @@ package com.spring.booking.accommodationbookingservice.dto.accommodation;
 import com.spring.booking.accommodationbookingservice.domain.Location;
 import com.spring.booking.accommodationbookingservice.domain.enums.Type;
 import com.spring.booking.accommodationbookingservice.dto.amenity.AmenityDto;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -14,5 +15,5 @@ public record AccommodationResponse(
         List<AmenityDto> amenities,
         BigDecimal dailyRate,
         Integer availability
-) {
+) implements Serializable {
 }

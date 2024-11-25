@@ -2,6 +2,7 @@ package com.spring.booking.accommodationbookingservice.dto.booking;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.spring.booking.accommodationbookingservice.domain.enums.Status;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 public record BookingResponse(
@@ -12,5 +13,5 @@ public record BookingResponse(
         Long accommodationId,
         Long userId,
         Status status
-) {
+) implements Serializable {
 }

@@ -8,6 +8,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -27,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Tag(name = "Accommodation management",
         description = "Endpoints for managing user's accommodations")
+@CacheConfig(cacheNames = "accommodation")
 public class AccommodationController {
     private final AccommodationService accommodationService;
 
@@ -50,6 +55,7 @@ public class AccommodationController {
     @GetMapping("/{id}")
     @Tag(name = "get", description = "GET methods of Accommodation APIs")
     @Operation(summary = "Get accommodation by ID", description = "Get accommodation by ID")
+    @Cacheable(key = "#id")
     public AccommodationResponse findById(@PathVariable Long id) {
         return accommodationService.findById(id);
     }
@@ -58,6 +64,7 @@ public class AccommodationController {
     @Tag(name = "put", description = "PUT methods of Accommodation APIs")
     @Operation(summary = "Update accommodation by ID", description = "Update accommodation by ID")
     @PreAuthorize("hasRole('ADMIN')")
+    @CachePut(key = "#id")
     public AccommodationResponse update(@PathVariable Long id,
                                         @RequestBody @Valid
                                         AccommodationUpdateRequestDto updateRequestDto) {
@@ -69,6 +76,7 @@ public class AccommodationController {
     @Operation(summary = "Delete accommodation by ID", description = "Delete accommodation by ID")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
+    @CacheEvict(key = "#id", beforeInvocation = true)
     public void delete(@PathVariable Long id) {
         accommodationService.deleteById(id);
     }

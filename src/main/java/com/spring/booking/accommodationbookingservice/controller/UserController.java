@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @Tag(name = "User management", description = "Endpoints for user managing")
+@CacheConfig(cacheNames = "user")
 public class UserController {
     private final UserService userService;
 
@@ -37,6 +40,7 @@ public class UserController {
     @Tag(name = "put", description = "PUT methods of Accommodation APIs")
     @Operation(summary = "Update user's role", description = "Update user's role")
     @PreAuthorize("hasRole('ADMIN')")
+    @CachePut(key = "#id")
     public UserResponse updateRole(@RequestBody @Valid RoleUpdateRequestDto updateRequestDto,
                                    @PathVariable Long id) {
         return userService.updateRole(updateRequestDto, id);

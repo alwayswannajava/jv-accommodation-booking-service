@@ -11,6 +11,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -29,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/bookings")
 @RequiredArgsConstructor
 @Tag(name = "Bookings management", description = "Endpoints for managing user's bookings")
+@CacheConfig(cacheNames = "booking")
 public class BookingController {
     private final BookingService bookingService;
 
@@ -68,6 +73,7 @@ public class BookingController {
     @Operation(summary = "Find booking ID",
             description = "Find booking by ID")
     @PreAuthorize("hasRole('CUSTOMER')")
+    @Cacheable(key = "#id")
     public BookingResponse findById(@PathVariable("booking_id") Long bookingId) {
         return bookingService.findById(bookingId);
     }
@@ -77,6 +83,7 @@ public class BookingController {
     @Operation(summary = "Update booking by ID",
             description = "Update booking by ID")
     @PreAuthorize("hasRole('CUSTOMER')")
+    @CachePut(key = "#bookingId")
     public BookingResponse update(@PathVariable("booking_id") Long bookingId,
                                   @Valid @RequestBody
                                   BookingUpdateRequestDto updateRequestDto) {
@@ -89,6 +96,7 @@ public class BookingController {
     @Operation(summary = "Delete booking by ID",
             description = "Delete booking by ID")
     @PreAuthorize("hasRole('CUSTOMER')")
+    @CacheEvict(key = "#bookingId")
     public void deleteById(@PathVariable("booking_id") Long bookingId) {
         bookingService.deleteById(bookingId);
     }
