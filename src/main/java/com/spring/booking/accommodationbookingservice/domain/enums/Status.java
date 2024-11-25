@@ -4,7 +4,6 @@ public enum Status {
     PENDING,
     UNPAID,
     PAID,
-    CONFIRMED,
     CANCELLED,
     EXPIRED
 }
