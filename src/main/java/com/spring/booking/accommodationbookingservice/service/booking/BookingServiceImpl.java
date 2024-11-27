@@ -8,6 +8,8 @@ import com.spring.booking.accommodationbookingservice.dto.booking.BookingUpdateR
 import com.spring.booking.accommodationbookingservice.exception.EntityNotFoundException;
 import com.spring.booking.accommodationbookingservice.mapper.BookingMapper;
 import com.spring.booking.accommodationbookingservice.repository.BookingRepository;
+import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageBuilder;
+import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,13 +19,19 @@ import org.springframework.stereotype.Service;
 public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final BookingMapper bookingMapper;
+    private final TelegramNotificationService telegramNotificationService;
+    private final TelegramNotificationMessageBuilder telegramNotificationMessageBuilder;
 
     @Override
     public BookingResponse create(Long userId, BookingCreateRequestDto createRequestDto) {
         Booking booking = bookingMapper.toModel(createRequestDto);
         booking.setUserId(userId);
         booking.setStatus(Status.PENDING);
-        return bookingMapper.toResponse(bookingRepository.save(booking));
+        BookingResponse response = bookingMapper.toResponse(bookingRepository.save(booking));
+        String builtNotificationMessage = telegramNotificationMessageBuilder
+                .buildNotificationMessage(response);
+        telegramNotificationService.sendMessage(builtNotificationMessage);
+        return response;
     }
 
     @Override
@@ -69,6 +77,13 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public void deleteById(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                        .orElseThrow(() -> new EntityNotFoundException("Booking with id: "
+                                + bookingId
+                                + " not found "));
+        String builtNotificationMessage = telegramNotificationMessageBuilder
+                .buildNotificationMessage(booking);
+        telegramNotificationService.sendMessage(builtNotificationMessage);
         bookingRepository.deleteById(bookingId);
     }
 }
