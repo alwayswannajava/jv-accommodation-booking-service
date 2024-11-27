@@ -122,8 +122,7 @@ public class PaymentServiceImpl implements PaymentService {
             payment.setStatus(Status.CANCELLED);
             paymentRepository.save(payment);
         }
-        return new PaymentCancelResponse(resource.getCancellationReason()
-                + STRIPE_PAYMENT_CANCEL_MESSAGE);
+        return new PaymentCancelResponse(STRIPE_PAYMENT_CANCEL_MESSAGE);
     }
 
     private Long calculateAmount(Booking booking, Accommodation accommodation) {

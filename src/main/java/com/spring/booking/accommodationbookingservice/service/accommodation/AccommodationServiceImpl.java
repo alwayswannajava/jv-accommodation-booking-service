@@ -7,7 +7,8 @@ import com.spring.booking.accommodationbookingservice.dto.accommodation.Accommod
 import com.spring.booking.accommodationbookingservice.exception.EntityNotFoundException;
 import com.spring.booking.accommodationbookingservice.mapper.AccommodationMapper;
 import com.spring.booking.accommodationbookingservice.repository.AccommodationRepository;
-import jakarta.transaction.Transactional;
+import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageBuilder;
+import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,11 +19,18 @@ import org.springframework.stereotype.Service;
 public class AccommodationServiceImpl implements AccommodationService {
     private final AccommodationRepository accommodationRepository;
     private final AccommodationMapper accommodationMapper;
+    private final TelegramNotificationService telegramNotificationService;
+    private final TelegramNotificationMessageBuilder telegramNotificationMessageBuilder;
 
     @Override
     public AccommodationResponse create(AccommodationCreateRequestDto createRequestDto) {
         Accommodation accommodation = accommodationMapper.toModel(createRequestDto);
-        return accommodationMapper.toResponse(accommodationRepository.save(accommodation));
+        AccommodationResponse response = accommodationMapper
+                .toResponse(accommodationRepository.save(accommodation));
+        String builtNotificationMessage = telegramNotificationMessageBuilder
+                .buildNotificationMessage(response);
+        telegramNotificationService.sendMessage(builtNotificationMessage);
+        return response;
     }
 
     @Override
@@ -52,7 +60,6 @@ public class AccommodationServiceImpl implements AccommodationService {
     }
 
     @Override
-    @Transactional
     public void deleteById(Long accommodationId) {
         accommodationRepository.deleteById(accommodationId);
     }
