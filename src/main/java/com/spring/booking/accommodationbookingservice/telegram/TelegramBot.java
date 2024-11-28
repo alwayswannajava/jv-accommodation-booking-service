@@ -49,7 +49,7 @@ public class TelegramBot implements SpringLongPollingBot, LongPollingSingleThrea
         try {
             telegramClient.execute(sendMessage);
         } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Cannot send message, because: ", e);
         }
     }
 
