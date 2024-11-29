@@ -3,6 +3,7 @@ package com.spring.booking.accommodationbookingservice.service.payment;
 import com.spring.booking.accommodationbookingservice.domain.Accommodation;
 import com.spring.booking.accommodationbookingservice.domain.Booking;
 import com.spring.booking.accommodationbookingservice.domain.Payment;
+import com.spring.booking.accommodationbookingservice.domain.User;
 import com.spring.booking.accommodationbookingservice.domain.enums.Status;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentCancelResponse;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentConfirmResponse;
@@ -13,6 +14,8 @@ import com.spring.booking.accommodationbookingservice.mapper.PaymentMapper;
 import com.spring.booking.accommodationbookingservice.repository.AccommodationRepository;
 import com.spring.booking.accommodationbookingservice.repository.BookingRepository;
 import com.spring.booking.accommodationbookingservice.repository.PaymentRepository;
+import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageBuilder;
+import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
@@ -27,6 +30,7 @@ import java.time.Period;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -54,6 +58,8 @@ public class PaymentServiceImpl implements PaymentService {
     private final BookingRepository bookingRepository;
     private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
+    private final TelegramNotificationMessageBuilder telegramNotificationMessageBuilder;
+    private final TelegramNotificationService telegramNotificationService;
 
     @Value("${stripe.key.secret}")
     private String stripeApiKey;
@@ -65,6 +71,17 @@ public class PaymentServiceImpl implements PaymentService {
     @PostConstruct
     private void initSecretKey() {
         Stripe.apiKey = stripeApiKey;
+    }
+
+    @Override
+    public List<PaymentResponse> findAll(Authentication authentication) {
+        if (authentication.getAuthorities().equals("")) {
+            return paymentRepository.findAll()
+                    .stream()
+                    .map(paymentMapper::toPaymentResponse)
+                    .toList();
+        }
+        return findAllByUserId(getUserById(authentication));
     }
 
     @Override
@@ -102,11 +119,15 @@ public class PaymentServiceImpl implements PaymentService {
             payment.setStatus(Status.PAID);
             paymentRepository.save(payment);
         }
-        return new PaymentConfirmResponse(STRIPE_PAYMENT_CONFIRM_MESSAGE,
+        PaymentConfirmResponse paymentConfirmResponse = new PaymentConfirmResponse(STRIPE_PAYMENT_CONFIRM_MESSAGE,
                 payment.getSessionUrl(),
                 payment.getSessionId(),
                 payment.getStatus(),
                 payment.getAmountToPay());
+        String builtNotificationMessage = telegramNotificationMessageBuilder
+                .buildNotificationMessage(paymentConfirmResponse);
+        telegramNotificationService.sendMessage(builtNotificationMessage);
+        return paymentConfirmResponse;
     }
 
     @Override
@@ -170,5 +191,10 @@ public class PaymentServiceImpl implements PaymentService {
                 .setAmount(stripeSession.getAmountTotal())
                 .build();
         return PaymentIntent.create(createParams);
+    }
+
+    private Long getUserById(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return user.getId();
     }
 }

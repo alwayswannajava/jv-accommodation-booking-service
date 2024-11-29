@@ -3,10 +3,12 @@ package com.spring.booking.accommodationbookingservice.telegram;
 import static com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageConstants.TELEGRAM_CANCEL_BOOKING_NOTIFICATION_MESSAGE;
 import static com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageConstants.TELEGRAM_CREATE_ACCOMMODATION_NOTIFICATION_MESSAGE;
 import static com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageConstants.TELEGRAM_CREATE_BOOKING_NOTIFICATION_MESSAGE;
+import static com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageConstants.TELEGRAM_CREATE_PAYMENT_NOTIFICATION_MESSAGE;
 
 import com.spring.booking.accommodationbookingservice.domain.Booking;
 import com.spring.booking.accommodationbookingservice.dto.accommodation.AccommodationResponse;
 import com.spring.booking.accommodationbookingservice.dto.booking.BookingResponse;
+import com.spring.booking.accommodationbookingservice.dto.payment.PaymentConfirmResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -38,6 +40,14 @@ public class TelegramNotificationMessageBuilderImpl implements TelegramNotificat
                 booking.getAccommodationId(),
                 booking.getUserId(),
                 booking.getStatus());
+    }
+
+    public String buildNotificationMessage(PaymentConfirmResponse response) {
+        return String.format(TELEGRAM_CREATE_PAYMENT_NOTIFICATION_MESSAGE,
+                response.paymentUrl(),
+                response.paymentId(),
+                response.status(),
+                response.amount());
     }
 
 }

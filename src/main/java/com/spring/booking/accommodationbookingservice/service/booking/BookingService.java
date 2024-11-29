@@ -4,10 +4,12 @@ import com.spring.booking.accommodationbookingservice.domain.enums.Status;
 import com.spring.booking.accommodationbookingservice.dto.booking.BookingCreateRequestDto;
 import com.spring.booking.accommodationbookingservice.dto.booking.BookingResponse;
 import com.spring.booking.accommodationbookingservice.dto.booking.BookingUpdateRequestDto;
+import com.spring.booking.accommodationbookingservice.exception.BookingProcessingException;
+
 import java.util.List;
 
 public interface BookingService {
-    BookingResponse create(Long userId, BookingCreateRequestDto createRequestDto);
+    BookingResponse create(Long userId, BookingCreateRequestDto createRequestDto) throws BookingProcessingException;
 
     List<BookingResponse> findByUserIdAndStatus(Long userId, Status status);
 

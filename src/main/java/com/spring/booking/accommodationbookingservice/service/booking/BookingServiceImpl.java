@@ -5,8 +5,10 @@ import com.spring.booking.accommodationbookingservice.domain.enums.Status;
 import com.spring.booking.accommodationbookingservice.dto.booking.BookingCreateRequestDto;
 import com.spring.booking.accommodationbookingservice.dto.booking.BookingResponse;
 import com.spring.booking.accommodationbookingservice.dto.booking.BookingUpdateRequestDto;
+import com.spring.booking.accommodationbookingservice.exception.BookingProcessingException;
 import com.spring.booking.accommodationbookingservice.exception.EntityNotFoundException;
 import com.spring.booking.accommodationbookingservice.mapper.BookingMapper;
+import com.spring.booking.accommodationbookingservice.repository.AccommodationRepository;
 import com.spring.booking.accommodationbookingservice.repository.BookingRepository;
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageBuilder;
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
@@ -17,13 +19,17 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
+    private final AccommodationRepository accommodationRepository;
     private final BookingRepository bookingRepository;
     private final BookingMapper bookingMapper;
     private final TelegramNotificationService telegramNotificationService;
     private final TelegramNotificationMessageBuilder telegramNotificationMessageBuilder;
 
     @Override
-    public BookingResponse create(Long userId, BookingCreateRequestDto createRequestDto) {
+    public BookingResponse create(Long userId, BookingCreateRequestDto createRequestDto)
+            throws BookingProcessingException {
+        checkAccommodationExist(createRequestDto.accommodationId());
+        checkAccommodationBookingOnTheSameDate(createRequestDto);
         Booking booking = bookingMapper.toModel(createRequestDto);
         booking.setUserId(userId);
         booking.setStatus(Status.PENDING);
@@ -85,5 +91,24 @@ public class BookingServiceImpl implements BookingService {
                 .buildNotificationMessage(booking);
         telegramNotificationService.sendMessage(builtNotificationMessage);
         bookingRepository.deleteById(bookingId);
+    }
+
+    private void checkAccommodationExist(Long accommodationId) {
+        accommodationRepository.findById(accommodationId)
+                .orElseThrow(() -> new EntityNotFoundException("Accommodation with id: "
+                        + accommodationId
+                        + " not found"));
+    }
+
+    private void checkAccommodationBookingOnTheSameDate(BookingCreateRequestDto createRequestDto)
+            throws BookingProcessingException {
+
+        if (bookingRepository.findByAccommodationIdAndCheckInDateAndCheckOutDate(
+                createRequestDto.accommodationId(),
+                createRequestDto.checkInDate(), createRequestDto.checkOutDate()).isPresent()) {
+            throw new BookingProcessingException("Accommodation with id: "
+                    + createRequestDto.accommodationId()
+                    + " is already booked on this date. Please, choose another date");
+        }
     }
 }

@@ -96,6 +96,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(BookingProcessingException.class)
+    public ResponseEntity<Object> handleDateTimeParseException(BookingProcessingException ex) {
+        List<String> errors = new ArrayList<>();
+        errors.add(ex.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                LocalDateTime.now(),
+                errors);
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
     private String getErrorMessage(ObjectError e) {
         if (e instanceof FieldError fieldError) {
             String field = fieldError.getField();

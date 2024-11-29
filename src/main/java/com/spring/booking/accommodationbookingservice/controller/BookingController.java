@@ -5,6 +5,7 @@ import com.spring.booking.accommodationbookingservice.domain.enums.Status;
 import com.spring.booking.accommodationbookingservice.dto.booking.BookingCreateRequestDto;
 import com.spring.booking.accommodationbookingservice.dto.booking.BookingResponse;
 import com.spring.booking.accommodationbookingservice.dto.booking.BookingUpdateRequestDto;
+import com.spring.booking.accommodationbookingservice.exception.BookingProcessingException;
 import com.spring.booking.accommodationbookingservice.service.booking.BookingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,7 +44,8 @@ public class BookingController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('CUSTOMER')")
     public BookingResponse create(Authentication authentication,
-                                  @RequestBody @Valid BookingCreateRequestDto createRequestDto) {
+                                  @RequestBody @Valid BookingCreateRequestDto createRequestDto)
+            throws BookingProcessingException {
         return bookingService.create(getUserById(authentication), createRequestDto);
     }
 
