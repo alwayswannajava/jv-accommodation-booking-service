@@ -3,6 +3,7 @@ package com.spring.booking.accommodationbookingservice.controller;
 import com.spring.booking.accommodationbookingservice.dto.accommodation.AccommodationCreateRequestDto;
 import com.spring.booking.accommodationbookingservice.dto.accommodation.AccommodationResponse;
 import com.spring.booking.accommodationbookingservice.dto.accommodation.AccommodationUpdateRequestDto;
+import com.spring.booking.accommodationbookingservice.exception.AccommodationProcessingException;
 import com.spring.booking.accommodationbookingservice.service.accommodation.AccommodationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -77,7 +78,7 @@ public class AccommodationController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
     @CacheEvict(key = "#id", beforeInvocation = true)
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) throws AccommodationProcessingException {
         accommodationService.deleteById(id);
     }
 }

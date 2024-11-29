@@ -4,6 +4,7 @@ import com.spring.booking.accommodationbookingservice.domain.Accommodation;
 import com.spring.booking.accommodationbookingservice.dto.accommodation.AccommodationCreateRequestDto;
 import com.spring.booking.accommodationbookingservice.dto.accommodation.AccommodationResponse;
 import com.spring.booking.accommodationbookingservice.dto.accommodation.AccommodationUpdateRequestDto;
+import com.spring.booking.accommodationbookingservice.exception.AccommodationProcessingException;
 import com.spring.booking.accommodationbookingservice.exception.EntityNotFoundException;
 import com.spring.booking.accommodationbookingservice.mapper.AccommodationMapper;
 import com.spring.booking.accommodationbookingservice.repository.AccommodationRepository;
@@ -60,7 +61,20 @@ public class AccommodationServiceImpl implements AccommodationService {
     }
 
     @Override
-    public void deleteById(Long accommodationId) {
+    public void deleteById(Long accommodationId) throws AccommodationProcessingException {
+        checkAccommodationCancelTwice(accommodationId);
         accommodationRepository.deleteById(accommodationId);
+    }
+
+    private void checkAccommodationCancelTwice(Long accommodationId)
+            throws AccommodationProcessingException {
+        accommodationRepository.findById(accommodationId)
+                .stream()
+                .filter(accommodation -> !accommodation.isDeleted())
+                .findFirst()
+                .orElseThrow(() -> new AccommodationProcessingException("You cannot "
+                        + "cancel accommodation with id: "
+                        + accommodationId
+                        + ", twice"));
     }
 }

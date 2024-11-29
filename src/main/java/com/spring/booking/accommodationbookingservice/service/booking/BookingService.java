@@ -5,11 +5,11 @@ import com.spring.booking.accommodationbookingservice.dto.booking.BookingCreateR
 import com.spring.booking.accommodationbookingservice.dto.booking.BookingResponse;
 import com.spring.booking.accommodationbookingservice.dto.booking.BookingUpdateRequestDto;
 import com.spring.booking.accommodationbookingservice.exception.BookingProcessingException;
-
 import java.util.List;
 
 public interface BookingService {
-    BookingResponse create(Long userId, BookingCreateRequestDto createRequestDto) throws BookingProcessingException;
+    BookingResponse create(Long userId, BookingCreateRequestDto createRequestDto)
+            throws BookingProcessingException;
 
     List<BookingResponse> findByUserIdAndStatus(Long userId, Status status);
 

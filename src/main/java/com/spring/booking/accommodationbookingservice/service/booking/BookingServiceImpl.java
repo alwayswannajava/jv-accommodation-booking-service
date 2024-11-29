@@ -105,7 +105,8 @@ public class BookingServiceImpl implements BookingService {
 
         if (bookingRepository.findByAccommodationIdAndCheckInDateAndCheckOutDate(
                 createRequestDto.accommodationId(),
-                createRequestDto.checkInDate(), createRequestDto.checkOutDate()).isPresent()) {
+                createRequestDto.checkInDate(),
+                createRequestDto.checkOutDate()).isPresent()) {
             throw new BookingProcessingException("Accommodation with id: "
                     + createRequestDto.accommodationId()
                     + " is already booked on this date. Please, choose another date");

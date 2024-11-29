@@ -3,13 +3,13 @@ package com.spring.booking.accommodationbookingservice.service.payment;
 import com.spring.booking.accommodationbookingservice.domain.Accommodation;
 import com.spring.booking.accommodationbookingservice.domain.Booking;
 import com.spring.booking.accommodationbookingservice.domain.Payment;
-import com.spring.booking.accommodationbookingservice.domain.User;
 import com.spring.booking.accommodationbookingservice.domain.enums.Status;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentCancelResponse;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentConfirmResponse;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentCreateRequestDto;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentResponse;
 import com.spring.booking.accommodationbookingservice.exception.EntityNotFoundException;
+import com.spring.booking.accommodationbookingservice.exception.PaymentProcessingException;
 import com.spring.booking.accommodationbookingservice.mapper.PaymentMapper;
 import com.spring.booking.accommodationbookingservice.repository.AccommodationRepository;
 import com.spring.booking.accommodationbookingservice.repository.BookingRepository;
@@ -30,7 +30,6 @@ import java.time.Period;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -74,17 +73,6 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<PaymentResponse> findAll(Authentication authentication) {
-        if (authentication.getAuthorities().equals("")) {
-            return paymentRepository.findAll()
-                    .stream()
-                    .map(paymentMapper::toPaymentResponse)
-                    .toList();
-        }
-        return findAllByUserId(getUserById(authentication));
-    }
-
-    @Override
     public List<PaymentResponse> findAllByUserId(Long userId) {
         return paymentRepository.findAllByUserId(userId)
                 .stream()
@@ -99,9 +87,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .orElseThrow(() -> new EntityNotFoundException("Booking with id: "
                         + createRequestDto.bookingId()
                         + " not found "));
-        Accommodation accommodation = accommodationRepository
-                .findById(booking.getAccommodationId())
-                .get();
+        Accommodation accommodation = checkAccommodationExist(booking.getAccommodationId());
         stripeSession = buildStripeSession(booking, accommodation);
         payment = paymentMapper.toModel(stripeSession);
         payment.setStatus(Status.UNPAID);
@@ -119,7 +105,8 @@ public class PaymentServiceImpl implements PaymentService {
             payment.setStatus(Status.PAID);
             paymentRepository.save(payment);
         }
-        PaymentConfirmResponse paymentConfirmResponse = new PaymentConfirmResponse(STRIPE_PAYMENT_CONFIRM_MESSAGE,
+        PaymentConfirmResponse paymentConfirmResponse = new PaymentConfirmResponse(
+                STRIPE_PAYMENT_CONFIRM_MESSAGE,
                 payment.getSessionUrl(),
                 payment.getSessionId(),
                 payment.getStatus(),
@@ -164,18 +151,18 @@ public class PaymentServiceImpl implements PaymentService {
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setSuccessUrl(STRIPE_PAYMENT_SUCCESS_URL)
                 .setCancelUrl(STRIPE_PAYMENT_CANCEL_URL)
-                .addLineItem(
-                        SessionCreateParams.LineItem.builder()
+                .addLineItem(SessionCreateParams.LineItem.builder()
                         .setQuantity(STRIPE_PRODUCT_QUANTITY)
                         .setPriceData(
                                 SessionCreateParams.LineItem.PriceData.builder()
-                                .setCurrency(STRIPE_PAYMENT_CURRENCY)
-                                .setUnitAmount(calculateAmount(booking, accommodation))
-                                .setProductData(SessionCreateParams.LineItem
-                                        .PriceData.ProductData.builder()
-                                        .setName(STRIPE_PAYMENT_PRODUCT_DATA_NAME + booking.getId())
+                                        .setCurrency(STRIPE_PAYMENT_CURRENCY)
+                                        .setUnitAmount(calculateAmount(booking, accommodation))
+                                        .setProductData(SessionCreateParams.LineItem
+                                                .PriceData.ProductData.builder()
+                                                .setName(STRIPE_PAYMENT_PRODUCT_DATA_NAME
+                                                        + booking.getId())
+                                                .build())
                                         .build())
-                                .build())
                         .build())
                 .build();
         return Session.create(sessionCreateParams);
@@ -193,8 +180,13 @@ public class PaymentServiceImpl implements PaymentService {
         return PaymentIntent.create(createParams);
     }
 
-    private Long getUserById(Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        return user.getId();
+    private Accommodation checkAccommodationExist(Long accommodationId) {
+        return accommodationRepository
+                .findById(accommodationId)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new PaymentProcessingException("Payment can't be done, because "
+                        + "accommodation is not present in our booking system. Maybe it was deleted"
+                        + "before. We apologize for the inconvenience"));
     }
 }

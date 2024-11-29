@@ -2,11 +2,9 @@ package com.spring.booking.accommodationbookingservice.repository;
 
 import com.spring.booking.accommodationbookingservice.domain.Booking;
 import com.spring.booking.accommodationbookingservice.domain.enums.Status;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
