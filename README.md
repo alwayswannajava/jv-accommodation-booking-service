@@ -125,9 +125,4 @@ For any questions or feedback, please reach out to:
 - Email: mykhailo.kornukh@gmail.com
 - Telegram: @miSHYRIK
 - Discord: stress_ful
- 
-## 📧 Contact  
-
-For any queries or suggestions, feel free to reach out at [mykhailo.kornukh@gmail.com](mykhailo.kornukh@gmail.com).  
-
 ---
