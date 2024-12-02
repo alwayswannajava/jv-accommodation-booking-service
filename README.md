@@ -24,8 +24,7 @@ This project leverages a robust tech stack to deliver performance, scalability, 
 
 ### Core Controllers:  
 - **Accommodation Controller:**  
-  - Create, update, and delete listings.  
-  - View and search available accommodations by filters (location, price, dates, etc.).  
+  - Create, update, and delete listings.   
 
 - **Booking Controller:**  
   - Reserve accommodations with real-time availability checks.  
