@@ -121,6 +121,6 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 
 ## 📧 Contact  
 
-For any queries or suggestions, feel free to reach out at [your-email@example.com](mailto:your-email@example.com).  
+For any queries or suggestions, feel free to reach out at [mykhailo.kornukh@gmail.com](mykhailo.kornukh@gmail.com).  
 
 ---
