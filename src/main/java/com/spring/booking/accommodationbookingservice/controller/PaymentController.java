@@ -29,6 +29,8 @@ public class PaymentController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
+    @Tag(name = "get", description = "GET methods of Accommodation APIs")
+    @Operation(summary = "Get payments by user id", description = "Get payments by user id")
     public List<PaymentResponse> getAllByUserId(@RequestParam(value = "user_id")
                                                     Long userId) {
         return paymentService.findAllByUserId(userId);

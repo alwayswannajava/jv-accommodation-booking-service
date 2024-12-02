@@ -187,6 +187,6 @@ public class PaymentServiceImpl implements PaymentService {
                 .findFirst()
                 .orElseThrow(() -> new PaymentProcessingException("Payment can't be done, because "
                         + "accommodation is not present in our booking system. Maybe it was deleted"
-                        + "before. We apologize for the inconvenience"));
+                        + " before. We apologize for the inconvenience"));
     }
 }

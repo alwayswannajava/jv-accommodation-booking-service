@@ -1,0 +1,35 @@
+services:
+  mysqldb:
+    image: postgres
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - POSTGRESQLDB_ROOT_PASSWORD=$POSTGRESQLDB_ROOT_PASSWORD
+      - POSTGRESQLDB_DATABASE=$POSTGRESQLDB_DATABASE
+    ports:
+      - $POSTGRESQLDB_LOCAL_PORT:$POSTGRESQLDB_DOCKER_PORT
+  app:
+    depends_on:
+      - postgres
+    restart: on-failure
+    image: accommodation-service
+    build: .
+    env_file: ./.env
+    ports:
+      - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+      - $DEBUG_PORT:$DEBUG_PORT
+    environment:
+      SPRING_APPLICATION_JSON: '{
+       "spring.datasource.url"  : "jdbc:postgresql://postgresqldb:$POSTGRESQLDB_DOCKER_PORT/POSTGRESQLDB_LOCAL_PORT?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC",
+       "spring.datasource.username" : "$POSTGRESQLDB_USER",
+       "spring.datasource.password" : "$POSTGRESQLDB_ROOT_PASSWORD",
+       "spring.jpa.properties.hibernate.dialect" : "org.postgresql.Driver",
+       "spring.jpa.hibernate.ddl-auto" : "validate", 
+       "spring.cache.type" : "redis", 
+       "spring.data.redis.host" : "localhost", 
+       "spring.data.redis.port" : "$REDIS_PORT",
+       "jwt.secret" : "$JWT_SECRET", 
+       "stripe.key.secret" : "$STRIPE_SECRET_KEY", 
+       "telegram.bot.key" : "$TELEGRAM_BOT_SECRET_KEY"
+     }'
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"

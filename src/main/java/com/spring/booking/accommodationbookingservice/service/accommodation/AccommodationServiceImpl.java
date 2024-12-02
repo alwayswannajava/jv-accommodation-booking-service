@@ -72,9 +72,9 @@ public class AccommodationServiceImpl implements AccommodationService {
                 .stream()
                 .filter(accommodation -> !accommodation.isDeleted())
                 .findFirst()
-                .orElseThrow(() -> new AccommodationProcessingException("You cannot "
-                        + "cancel accommodation with id: "
+                .orElseThrow(() -> new AccommodationProcessingException("Cannot cancel "
+                        + "accommodation: "
                         + accommodationId
-                        + ", twice"));
+                        + " twice"));
     }
 }

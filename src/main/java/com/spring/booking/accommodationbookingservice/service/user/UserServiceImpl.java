@@ -14,6 +14,7 @@ import com.spring.booking.accommodationbookingservice.repository.RoleRepository;
 import com.spring.booking.accommodationbookingservice.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,11 @@ public class UserServiceImpl implements UserService {
                         + userId
                         + " not found")
         );
+        Set<Role> updatedRoles = roleRequestDto.roles()
+                .stream()
+                .map(roleRepository::findByRole)
+                .collect(Collectors.toSet());
+        user.setRoles(updatedRoles);
         return userMapper.toResponse(user);
     }
 
