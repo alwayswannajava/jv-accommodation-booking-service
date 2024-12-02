@@ -108,8 +108,45 @@ This project leverages a robust tech stack to deliver performance, scalability, 
 
 4. **Secure and Scalable Architecture:**  
    - *Challenge:* Implementing role-based access and securing sensitive endpoints.  
-   - *Solution:* Configured Spring Security with JWT for authentication and fine-grained access control.  
+   - *Solution:* Configured Spring Security with JWT for authentication and fine-grained access control.
 
+## 📝 API Endpoints
+
+### Authentication Controller
+```
+POST: /register - User account registration
+POST: /login - JWT token generation
+```
+### User Controller
+```
+PUT: /users/{id}/role - Update user roles
+GET: /users/me - Retrieve current user profile
+PUT/PATCH: /users/me - Update user profile
+```
+### Accommodation Controller
+```
+POST: /accommodations - Add new accommodation
+GET: /accommodations - List available accommodations
+GET: /accommodations/{id} - Get accommodation details
+PUT/PATCH: /accommodations/{id} - Update accommodation
+DELETE: /accommodations/{id} - Remove accommodation
+```
+### Booking Controller
+```
+POST: /bookings - Create new booking
+GET: /bookings/ - Retrieve bookings (with filters)
+GET: /bookings/my - User's personal bookings
+GET: /bookings/{id} - Get specific booking details
+PUT/PATCH: /bookings/{id} - Update booking
+DELETE: /bookings/{id} - Cancel booking
+```
+### Payment Controller
+```
+GET: /payments/ - Retrieve payment information
+POST: /payments/ - Initiate payment session
+GET: /payments/success/ - Handle successful payment
+GET: /payments/cancel/ - Manage payment cancellation
+```
 ---
 
 ## 🤝 Contributing  
