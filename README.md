@@ -36,7 +36,8 @@ This project leverages a robust tech stack to deliver performance, scalability, 
 
 - **Notification Controller:**  
   - Sends real-time booking updates to users via Telegram.  
-  - Notify hosts about new bookings or cancellations.  
+  - Notify hosts about new bookings or cancellations.
+  - Notify hosts about successful payments.
 
 - **User Management Controller:**  
   - Handles user authentication and role-based access (Spring Security).  
