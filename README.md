@@ -151,7 +151,7 @@ GET: /payments/cancel/ - Manage payment cancellation
 ## 📺 Visual 
 ### Flowchart 
 
-![image](https://github.com/user-attachments/assets/a86ef090-a4be-4ba9-8a50-dde2361d886d)
+![image](https://github.com/user-attachments/assets/3277fd40-9970-4db9-901c-bf85da8487b0)
 
 ### Accommodation service collections 
 ```
