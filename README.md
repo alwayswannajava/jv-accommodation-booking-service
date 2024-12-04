@@ -149,7 +149,9 @@ GET: /payments/success/ - Handle successful payment
 GET: /payments/cancel/ - Manage payment cancellation
 ```
 ## 📺 Visual 
-### Flowchart ![image](https://github.com/user-attachments/assets/a86ef090-a4be-4ba9-8a50-dde2361d886d)
+### Flowchart 
+
+![image](https://github.com/user-attachments/assets/a86ef090-a4be-4ba9-8a50-dde2361d886d)
 
 ### Accommodation service collections 
 ```
