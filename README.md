@@ -22,7 +22,7 @@ This project leverages a robust tech stack to deliver performance, scalability, 
 
 ## 🚀 Features and Functionality  
 
-### Core Controllers:  
+### Core Controllers and Services:  
 - **Accommodation Controller:**  
   - Create, update, and delete accommodation.   
 
@@ -32,17 +32,17 @@ This project leverages a robust tech stack to deliver performance, scalability, 
 
 - **Payment Controller:**  
   - Integrates with Stripe API to handle secure transactions.  
-  - Manage refunds and payment confirmations.  
-
-- **Notification Controller:**  
+  - Manage refunds and payment confirmations.
+  
+- **User Management Controller:**  
+  - Handles user authentication and role-based access (Spring Security).  
+  - Update user profiles and manage account settings
+  
+- **Notification Service:**  
   - Sends real-time booking updates to users via Telegram.  
   - Notify hosts about new bookings or cancellations.
   - Notify hosts about successful payments.
-
-- **User Management Controller:**  
-  - Handles user authentication and role-based access (Spring Security).  
-  - Update user profiles and manage account settings.  
-
+ 
 ---
 
 ## 🛠️ Setting Up the Project  
