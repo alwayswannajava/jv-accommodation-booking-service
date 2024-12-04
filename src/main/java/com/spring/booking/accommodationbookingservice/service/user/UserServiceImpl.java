@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService {
                 .map(roleRepository::findByRole)
                 .collect(Collectors.toSet());
         user.setRoles(updatedRoles);
+        userRepository.save(user);
         return userMapper.toResponse(user);
     }
 

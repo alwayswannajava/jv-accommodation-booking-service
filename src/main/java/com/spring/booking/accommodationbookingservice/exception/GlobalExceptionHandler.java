@@ -97,7 +97,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BookingProcessingException.class)
-    public ResponseEntity<Object> handleDateTimeParseException(BookingProcessingException ex) {
+    public ResponseEntity<Object> handleBookingProcessingException(BookingProcessingException ex) {
         List<String> errors = new ArrayList<>();
         errors.add(ex.getMessage());
 
@@ -109,8 +109,21 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AccommodationProcessingException.class)
-    public ResponseEntity<Object> handleDateTimeParseException(
+    public ResponseEntity<Object> handleAccommodationProcessingException(
             AccommodationProcessingException ex) {
+        List<String> errors = new ArrayList<>();
+        errors.add(ex.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                LocalDateTime.now(),
+                errors);
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(PaymentProcessingException.class)
+    public ResponseEntity<Object> handlePaymentProcessingException(
+            PaymentProcessingException ex) {
         List<String> errors = new ArrayList<>();
         errors.add(ex.getMessage());
 
