@@ -155,7 +155,7 @@ GET: /payments/cancel/ - Manage payment cancellation
 
 ### Accommodation service collections 
 ```
-[[https://web.postman.co/workspace/My-Workspace~094913b8-3731-4cce-8108-9a9ee90872b2/api/8847db5f-52c1-4c57-859b-79c52f435a47/collection/25455394-423d22c9-14bb-42ee-a469-4bf86dde8005?action=share&source=copy-link&creator=25455394](https://web.postman.co/workspace/My-Workspace~094913b8-3731-4cce-8108-9a9ee90872b2/api/029af70d-0ece-4399-bb5f-1eb8ddf500ca/collection/25455394-0ce36e2b-54cf-4da5-8511-1ed5fd5f3d76?action=share&source=copy-link&creator=25455394)](https://web.postman.co/workspace/My-Workspace~094913b8-3731-4cce-8108-9a9ee90872b2/api/029af70d-0ece-4399-bb5f-1eb8ddf500ca?action=share&source=copy-link&creator=25455394)
+https://web.postman.co/workspace/My-Workspace~094913b8-3731-4cce-8108-9a9ee90872b2/api/8847db5f-52c1-4c57-859b-79c52f435a47/collection/25455394-423d22c9-14bb-42ee-a469-4bf86dde8005?action=share&source=copy-link&creator=25455394](https://web.postman.co/workspace/My-Workspace~094913b8-3731-4cce-8108-9a9ee90872b2/api/029af70d-0ece-4399-bb5f-1eb8ddf500ca/collection/25455394-0ce36e2b-54cf-4da5-8511-1ed5fd5f3d76?action=share&source=copy-link&creator=25455394)](https://web.postman.co/workspace/My-Workspace~094913b8-3731-4cce-8108-9a9ee90872b2/api/029af70d-0ece-4399-bb5f-1eb8ddf500ca?action=share&source=copy-link&creator=25455394
 ```
 ---
 
