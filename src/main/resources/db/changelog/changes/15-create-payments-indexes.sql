@@ -1,0 +1,1 @@
+create index payment_booking_id_idx on payments(booking_id);

@@ -15,9 +15,11 @@ import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificat
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookingServiceImpl implements BookingService {
     private final AccommodationRepository accommodationRepository;
     private final BookingRepository bookingRepository;
@@ -41,6 +43,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BookingResponse> findByUserIdAndStatus(Long userId, Status status) {
         if (userId == null) {
             return bookingRepository.findAllByStatus(status)
@@ -55,6 +58,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BookingResponse> findAllByUserId(Long userId) {
         return bookingRepository.findAllByUserId(userId)
                 .stream()
@@ -63,6 +67,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BookingResponse findById(Long bookingId) {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new EntityNotFoundException(
@@ -94,7 +99,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private void checkAccommodationExist(Long accommodationId) {
-        accommodationRepository.findById(accommodationId)
+        accommodationRepository.findByIdFetchAddressAndAmenities(accommodationId)
                 .orElseThrow(() -> new EntityNotFoundException("Accommodation with id: "
                         + accommodationId
                         + " not found"));

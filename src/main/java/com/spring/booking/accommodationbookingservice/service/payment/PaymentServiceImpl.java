@@ -18,13 +18,14 @@ import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificat
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
-import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PaymentServiceImpl implements PaymentService {
     private static final String PAYMENT_CONFIRM_MESSAGE = "Your payment was "
             + "successfully confirmed.";
@@ -36,29 +37,29 @@ public class PaymentServiceImpl implements PaymentService {
     private final BookingRepository bookingRepository;
     private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
-    private final BaseStripeClient baseStripeClient;
+    private final StripeClient stripeClient;
     private final TelegramNotificationMessageBuilder telegramNotificationMessageBuilder;
     private final TelegramNotificationService telegramNotificationService;
 
     private Payment payment;
 
     @Override
+    @Transactional(readOnly = true)
     public List<PaymentResponse> findAllByUserId(Long userId) {
-        return paymentRepository.findAllByUserId(userId)
+        return paymentRepository.findAllFetchBookingByUserId(userId)
                 .stream()
                 .map(paymentMapper::toPaymentResponse)
                 .toList();
     }
 
     @Override
-    @Transactional
     public PaymentResponse create(PaymentCreateRequestDto createRequestDto) throws StripeException {
         Booking booking = bookingRepository.findById(createRequestDto.bookingId())
                 .orElseThrow(() -> new EntityNotFoundException("Booking with id: "
                         + createRequestDto.bookingId()
                         + " not found "));
         Accommodation accommodation = checkAccommodationExist(booking.getAccommodationId());
-        Session stripeSession = baseStripeClient.buildStripeSession(booking, accommodation);
+        Session stripeSession = stripeClient.buildStripeSession(booking, accommodation);
         payment = paymentMapper.toModel(stripeSession);
         payment.setStatus(Status.UNPAID);
         payment.setBookingId(booking.getId());
@@ -66,10 +67,9 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    @Transactional
     public PaymentConfirmResponse confirm() throws StripeException {
-        baseStripeClient.buildStripeConfirmPayment();
-        if (baseStripeClient.isPaymentSuccess()) {
+        stripeClient.buildStripeConfirmPayment();
+        if (stripeClient.isPaymentSuccess()) {
             payment.setStatus(Status.PAID);
             paymentRepository.save(payment);
         }
@@ -86,9 +86,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    @Transactional
     public PaymentCancelResponse cancel() throws StripeException {
-        if (baseStripeClient.isPaymentCanceled()) {
+        if (stripeClient.isPaymentCanceled()) {
             payment.setStatus(Status.CANCELLED);
             paymentRepository.save(payment);
         }
@@ -97,7 +96,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     private Accommodation checkAccommodationExist(Long accommodationId) {
         return accommodationRepository
-                .findById(accommodationId)
+                .findByIdFetchAddressAndAmenities(accommodationId)
                 .stream()
                 .findFirst()
                 .orElseThrow(() -> new PaymentProcessingException(

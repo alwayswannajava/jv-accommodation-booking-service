@@ -14,9 +14,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AccommodationServiceImpl implements AccommodationService {
     private final AccommodationRepository accommodationRepository;
     private final AccommodationMapper accommodationMapper;
@@ -35,14 +37,17 @@ public class AccommodationServiceImpl implements AccommodationService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<AccommodationResponse> findAll(Pageable pageable) {
-        return accommodationRepository.findAll(pageable)
+        return accommodationRepository.findAllFetchAddressAndAmenities(pageable)
                 .map(accommodationMapper::toResponse);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AccommodationResponse findById(Long accommodationId) {
-        Accommodation accommodation = accommodationRepository.findById(accommodationId)
+        Accommodation accommodation = accommodationRepository.findByIdFetchAddressAndAmenities(
+                accommodationId)
                 .orElseThrow(() -> new EntityNotFoundException("Accommodation with id: "
                         + accommodationId
                         + " not found "));
@@ -52,7 +57,8 @@ public class AccommodationServiceImpl implements AccommodationService {
     @Override
     public AccommodationResponse update(AccommodationUpdateRequestDto updateRequestDto,
                                         Long accommodationId) {
-        Accommodation accommodation = accommodationRepository.findById(accommodationId)
+        Accommodation accommodation = accommodationRepository.findByIdFetchAddressAndAmenities(
+                accommodationId)
                 .orElseThrow(() -> new EntityNotFoundException("Accommodation with id: "
                         + accommodationId
                         + " not found "));
@@ -68,7 +74,7 @@ public class AccommodationServiceImpl implements AccommodationService {
 
     private void checkAccommodationCancelTwice(Long accommodationId)
             throws AccommodationProcessingException {
-        accommodationRepository.findById(accommodationId)
+        accommodationRepository.findByIdFetchAddressAndAmenities(accommodationId)
                 .stream()
                 .filter(accommodation -> !accommodation.isDeleted())
                 .findFirst()

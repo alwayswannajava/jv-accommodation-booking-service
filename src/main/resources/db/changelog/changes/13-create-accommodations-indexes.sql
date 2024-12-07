@@ -1,0 +1,1 @@
+create index accommodation_location_id_idx on accommodations(location_id);

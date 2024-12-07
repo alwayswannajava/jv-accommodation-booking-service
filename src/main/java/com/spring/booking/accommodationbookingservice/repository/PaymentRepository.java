@@ -10,5 +10,5 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
             + " inner join fetch Booking b "
             + " on p.bookingId = b.id "
             + " where b.userId = :userId ")
-    List<Payment> findAllByUserId(Long userId);
+    List<Payment> findAllFetchBookingByUserId(Long userId);
 }

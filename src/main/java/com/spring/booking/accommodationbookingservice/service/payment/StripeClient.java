@@ -2,20 +2,45 @@ package com.spring.booking.accommodationbookingservice.service.payment;
 
 import com.spring.booking.accommodationbookingservice.domain.Accommodation;
 import com.spring.booking.accommodationbookingservice.domain.Booking;
+import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.PaymentIntentCancelParams;
 import com.stripe.param.PaymentIntentCreateParams;
 import com.stripe.param.checkout.SessionCreateParams;
+import jakarta.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.Period;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StripeClient extends BaseStripeClient {
+public class StripeClient {
+    private static final String STRIPE_PAYMENT_CURRENCY = "usd";
+    private static final String STRIPE_PAYMENT_METHOD = "pm_card_visa";
+    private static final String STRIPE_PAYMENT_METHOD_TYPE = "card";
+    private static final String STRIPE_PAYMENT_SUCCESS_URL = "https://example.com/success";
+    private static final String STRIPE_PAYMENT_CANCEL_URL = "https://example.com/cancel";
+    private static final String STRIPE_PAYMENT_PRODUCT_DATA_NAME = "Booking #";
+    private static final String STRIPE_PAYMENT_SUCCESS_STATUS = "succeeded";
+    private static final String STRIPE_PAYMENT_CANCEL_STATUS_REGEX = "requires_";
 
-    @Override
+    private static final String STRIPE_SESSION_PAYMENT_SUCCESS_STATUS = "paid";
+
+    private static final Long STRIPE_PRODUCT_QUANTITY = 1L;
+
+    private Session stripeSession;
+    private PaymentIntent stripePayment;
+
+    @Value("${stripe.key.secret}")
+    private String stripeApiKey;
+
+    @PostConstruct
+    private void initSecretKey() {
+        Stripe.apiKey = stripeApiKey;
+    }
+
     public Session buildStripeSession(Booking booking, Accommodation accommodation)
             throws StripeException {
         SessionCreateParams sessionCreateParams = SessionCreateParams.builder()
@@ -40,7 +65,6 @@ public class StripeClient extends BaseStripeClient {
         return stripeSession;
     }
 
-    @Override
     public void buildStripeConfirmPayment() throws StripeException {
         PaymentIntentCreateParams createParams = PaymentIntentCreateParams
                 .builder()
@@ -53,7 +77,6 @@ public class StripeClient extends BaseStripeClient {
         stripePayment = PaymentIntent.create(createParams);
     }
 
-    @Override
     public boolean isPaymentSuccess() {
         if (stripePayment.getStatus().equals(STRIPE_PAYMENT_SUCCESS_STATUS)) {
             stripeSession.setPaymentIntent(stripePayment.getId());
@@ -63,7 +86,6 @@ public class StripeClient extends BaseStripeClient {
         return false;
     }
 
-    @Override
     public boolean isPaymentCanceled() throws StripeException {
         PaymentIntent resource = PaymentIntent.retrieve(stripePayment.getId());
         if (stripePayment.toString().startsWith(STRIPE_PAYMENT_CANCEL_STATUS_REGEX)) {

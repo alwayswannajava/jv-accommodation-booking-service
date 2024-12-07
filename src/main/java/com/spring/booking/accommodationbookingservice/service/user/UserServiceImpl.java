@@ -12,15 +12,16 @@ import com.spring.booking.accommodationbookingservice.exception.RegistrationExce
 import com.spring.booking.accommodationbookingservice.mapper.UserMapper;
 import com.spring.booking.accommodationbookingservice.repository.RoleRepository;
 import com.spring.booking.accommodationbookingservice.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -28,7 +29,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    @Transactional
     public UserResponse register(UserRegistrationRequestDto userRegistrationRequestDto)
             throws RegistrationException {
         if (userRepository.existsByEmail(userRegistrationRequestDto.email())) {
@@ -59,13 +59,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserResponse getUserInfo(Long userId) {
-        return userMapper.toResponse(userRepository.findById(userId).get());
+        return userMapper.toResponse(userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("User with id "
+                        + userId
+                        + " not found")));
     }
 
     @Override
     public UserResponse updateUserInfo(UserUpdateRequestDto updateRequestDto, Long userId) {
-        User user = userRepository.findById(userId).get();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("User with id "
+                        + userId
+                        + " not found"));
         User updatedUser = userMapper.toUser(user, updateRequestDto);
         userRepository.save(updatedUser);
         return userMapper.toResponse(updatedUser);
