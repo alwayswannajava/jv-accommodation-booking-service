@@ -9,6 +9,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     @Query(" from Payment p "
             + " inner join fetch Booking b "
             + " on p.bookingId = b.id "
-            + " where b.userId = :userId ")
+            + " where b.userId = ?1 ")
     List<Payment> findAllFetchBookingByUserId(Long userId);
 }
