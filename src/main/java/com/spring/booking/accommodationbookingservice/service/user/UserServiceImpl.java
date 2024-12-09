@@ -54,7 +54,6 @@ public class UserServiceImpl implements UserService {
                 .map(roleRepository::findByRole)
                 .collect(Collectors.toSet());
         user.setRoles(updatedRoles);
-        userRepository.save(user);
         return userMapper.toResponse(user);
     }
 
@@ -64,8 +63,8 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponse(userRepository.findById(userId)
                 .orElseThrow(() ->
                         new EntityNotFoundException("User with id "
-                        + userId
-                        + " not found")));
+                                + userId
+                                + " not found")));
     }
 
     @Override
@@ -73,10 +72,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() ->
                         new EntityNotFoundException("User with id "
-                        + userId
-                        + " not found"));
+                                + userId
+                                + " not found"));
         User updatedUser = userMapper.toUser(user, updateRequestDto);
-        userRepository.save(updatedUser);
+        user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         return userMapper.toResponse(updatedUser);
     }
 }

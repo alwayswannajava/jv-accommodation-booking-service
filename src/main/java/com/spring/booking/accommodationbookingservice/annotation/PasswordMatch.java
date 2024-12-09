@@ -9,7 +9,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = PasswordMatchValidator.class)
+@Constraint(validatedBy = {CreateUserPasswordMatchValidator.class,
+        UpdateUserPasswordMatchValidator.class})
 public @interface PasswordMatch {
     String message() default "{PasswordMatch.message}";
     Class<?>[] groups() default {};

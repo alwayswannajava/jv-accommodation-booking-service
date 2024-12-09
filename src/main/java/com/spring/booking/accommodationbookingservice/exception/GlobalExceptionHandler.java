@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     private static final String INVALID_DATE_FORMAT_MESSAGE = "Invalid date format. Must be like: "
             + "dd-MM-yyyy";
+    private static final String EMAIL_ALREADY_EXISTS = "Email already exists. Try another one";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleMethodArgumentNotValidException(
@@ -126,6 +128,19 @@ public class GlobalExceptionHandler {
             PaymentProcessingException ex) {
         List<String> errors = new ArrayList<>();
         errors.add(ex.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                LocalDateTime.now(),
+                errors);
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> handleDataIntegrityViolationException(
+            DataIntegrityViolationException ex) {
+        List<String> errors = new ArrayList<>();
+        errors.add(EMAIL_ALREADY_EXISTS);
 
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.CONFLICT.value(),

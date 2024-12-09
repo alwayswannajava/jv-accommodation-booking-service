@@ -5,7 +5,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.util.Objects;
 
-public class PasswordMatchValidator implements
+public class CreateUserPasswordMatchValidator implements
         ConstraintValidator<PasswordMatch, UserRegistrationRequestDto> {
 
     @Override
