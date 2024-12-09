@@ -63,7 +63,7 @@ public class AccommodationServiceImpl implements AccommodationService {
                         + accommodationId
                         + " not found "));
         accommodationMapper.toModel(accommodation, updateRequestDto);
-        return accommodationMapper.toResponse(accommodationRepository.save(accommodation));
+        return accommodationMapper.toResponse(accommodation);
     }
 
     @Override

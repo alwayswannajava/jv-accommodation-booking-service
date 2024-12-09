@@ -83,7 +83,7 @@ public class BookingServiceImpl implements BookingService {
                         "Can't find any bookings with bookingId: "
                                 + bookingId));
         bookingMapper.toModel(booking, updateRequestDto);
-        return bookingMapper.toResponse(bookingRepository.save(booking));
+        return bookingMapper.toResponse(booking);
     }
 
     @Override
