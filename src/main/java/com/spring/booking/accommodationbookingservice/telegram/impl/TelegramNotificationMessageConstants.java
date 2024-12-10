@@ -1,4 +1,4 @@
-package com.spring.booking.accommodationbookingservice.telegram;
+package com.spring.booking.accommodationbookingservice.telegram.impl;
 
 public final class TelegramNotificationMessageConstants {
     public static final String NO_EXPIRED_BOOKINGS_MESSAGE = "No expired bookings today";

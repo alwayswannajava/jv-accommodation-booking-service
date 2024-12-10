@@ -1,5 +1,7 @@
-package com.spring.booking.accommodationbookingservice.telegram;
+package com.spring.booking.accommodationbookingservice.telegram.impl;
 
+import com.spring.booking.accommodationbookingservice.telegram.TelegramBot;
+import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

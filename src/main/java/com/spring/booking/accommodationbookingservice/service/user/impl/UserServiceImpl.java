@@ -1,4 +1,4 @@
-package com.spring.booking.accommodationbookingservice.service.user;
+package com.spring.booking.accommodationbookingservice.service.user.impl;
 
 import com.spring.booking.accommodationbookingservice.domain.Role;
 import com.spring.booking.accommodationbookingservice.domain.User;
@@ -12,6 +12,7 @@ import com.spring.booking.accommodationbookingservice.exception.RegistrationExce
 import com.spring.booking.accommodationbookingservice.mapper.UserMapper;
 import com.spring.booking.accommodationbookingservice.repository.RoleRepository;
 import com.spring.booking.accommodationbookingservice.repository.UserRepository;
+import com.spring.booking.accommodationbookingservice.service.user.UserService;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;

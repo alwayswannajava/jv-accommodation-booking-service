@@ -1,4 +1,4 @@
-package com.spring.booking.accommodationbookingservice.service.accommodation;
+package com.spring.booking.accommodationbookingservice.service.accommodation.impl;
 
 import com.spring.booking.accommodationbookingservice.domain.Accommodation;
 import com.spring.booking.accommodationbookingservice.dto.accommodation.AccommodationCreateRequestDto;
@@ -8,6 +8,7 @@ import com.spring.booking.accommodationbookingservice.exception.AccommodationPro
 import com.spring.booking.accommodationbookingservice.exception.EntityNotFoundException;
 import com.spring.booking.accommodationbookingservice.mapper.AccommodationMapper;
 import com.spring.booking.accommodationbookingservice.repository.AccommodationRepository;
+import com.spring.booking.accommodationbookingservice.service.accommodation.AccommodationService;
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageBuilder;
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
 import lombok.RequiredArgsConstructor;

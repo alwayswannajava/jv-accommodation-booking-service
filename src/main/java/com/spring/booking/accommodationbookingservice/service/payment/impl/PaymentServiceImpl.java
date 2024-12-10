@@ -1,4 +1,4 @@
-package com.spring.booking.accommodationbookingservice.service.payment;
+package com.spring.booking.accommodationbookingservice.service.payment.impl;
 
 import com.spring.booking.accommodationbookingservice.domain.Accommodation;
 import com.spring.booking.accommodationbookingservice.domain.Booking;
@@ -14,6 +14,8 @@ import com.spring.booking.accommodationbookingservice.mapper.PaymentMapper;
 import com.spring.booking.accommodationbookingservice.repository.AccommodationRepository;
 import com.spring.booking.accommodationbookingservice.repository.BookingRepository;
 import com.spring.booking.accommodationbookingservice.repository.PaymentRepository;
+import com.spring.booking.accommodationbookingservice.service.payment.PaymentService;
+import com.spring.booking.accommodationbookingservice.service.payment.StripeClient;
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageBuilder;
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
 import com.stripe.exception.StripeException;

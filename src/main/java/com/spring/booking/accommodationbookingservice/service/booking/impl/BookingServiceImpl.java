@@ -1,4 +1,4 @@
-package com.spring.booking.accommodationbookingservice.service.booking;
+package com.spring.booking.accommodationbookingservice.service.booking.impl;
 
 import com.spring.booking.accommodationbookingservice.domain.Booking;
 import com.spring.booking.accommodationbookingservice.domain.enums.Status;
@@ -10,6 +10,7 @@ import com.spring.booking.accommodationbookingservice.exception.EntityNotFoundEx
 import com.spring.booking.accommodationbookingservice.mapper.BookingMapper;
 import com.spring.booking.accommodationbookingservice.repository.AccommodationRepository;
 import com.spring.booking.accommodationbookingservice.repository.BookingRepository;
+import com.spring.booking.accommodationbookingservice.service.booking.BookingService;
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageBuilder;
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
 import java.util.List;

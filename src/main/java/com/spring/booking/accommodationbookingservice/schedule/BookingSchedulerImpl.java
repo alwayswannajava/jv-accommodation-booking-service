@@ -1,6 +1,6 @@
 package com.spring.booking.accommodationbookingservice.schedule;
 
-import static com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageConstants.NO_EXPIRED_BOOKINGS_MESSAGE;
+import static com.spring.booking.accommodationbookingservice.telegram.impl.TelegramNotificationMessageConstants.NO_EXPIRED_BOOKINGS_MESSAGE;
 
 import com.spring.booking.accommodationbookingservice.domain.Booking;
 import com.spring.booking.accommodationbookingservice.domain.enums.Status;
