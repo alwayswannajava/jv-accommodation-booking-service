@@ -10,9 +10,9 @@ import com.spring.booking.accommodationbookingservice.dto.accommodation.Accommod
 import com.spring.booking.accommodationbookingservice.dto.booking.BookingResponse;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentConfirmResponse;
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageBuilder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class TelegramNotificationMessageBuilderImpl implements TelegramNotificationMessageBuilder {
     @Override
     public String buildNotificationMessage(AccommodationResponse response) {
@@ -50,5 +50,4 @@ public class TelegramNotificationMessageBuilderImpl implements TelegramNotificat
                 response.status(),
                 response.amount());
     }
-
 }
