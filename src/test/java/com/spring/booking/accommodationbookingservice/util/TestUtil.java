@@ -42,13 +42,14 @@ import com.spring.booking.accommodationbookingservice.dto.booking.BookingUpdateR
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentCancelResponse;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentConfirmResponse;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentCreateRequestDto;
+import com.spring.booking.accommodationbookingservice.dto.payment.PaymentResponse;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.PageRequest;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public final class TestUtil {
+
     private TestUtil() {
 
     }
@@ -173,6 +174,14 @@ public final class TestUtil {
         payment.setAmountToPay(BigDecimal.valueOf(800));
         payment.setSessionId(CORRECT_SESSION_ID);
         return payment;
+    }
+
+    public static PaymentResponse createPaymentResponse() {
+        return new PaymentResponse(Status.UNPAID,
+                CORRECT_BOOKING_ID,
+                CORRECT_PAYMENT_URL,
+                CORRECT_SESSION_ID,
+                BigDecimal.valueOf(800).longValue());
     }
 
     public static PaymentCreateRequestDto createPaymentRequestDto() {

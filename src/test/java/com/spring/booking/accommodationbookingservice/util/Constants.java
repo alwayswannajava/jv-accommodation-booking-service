@@ -19,7 +19,7 @@ public final class Constants {
             "Wi-fi", "Wi-fi technology"));
     public static final List<Amenity> ACCOMMODATION_AMENITIES = List.of(new Amenity(
             "Wi-fi", "Wi-fi technology"));
-    public static final BigDecimal ACCOMMODATION_DAILY_RATE = BigDecimal.valueOf(23.23);
+    public static final BigDecimal ACCOMMODATION_DAILY_RATE = BigDecimal.valueOf(1123.23);
     public static final Integer ACCOMMODATION_AVAILABILITY = 10;
 
     public static final Type UPDATE_ACCOMMODATION_TYPE = Type.APARTMENT;
@@ -82,6 +82,18 @@ public final class Constants {
     public static final String CANCEL_PAYMENT_MESSAGE = ". You can made it later. "
             + "But keep it in mind, "
             + "that session expires for 24 hours";
+    public static final String STRIPE_PAYMENT_CURRENCY = "usd";
+    public static final String STRIPE_PAYMENT_METHOD = "pm_card_visa";
+    public static final String STRIPE_PAYMENT_METHOD_TYPE = "card";
+    public static final String STRIPE_PAYMENT_SUCCESS_URL = "https://example.com/success";
+    public static final String STRIPE_PAYMENT_CANCEL_URL = "https://example.com/cancel";
+    public static final String STRIPE_PAYMENT_PRODUCT_DATA_NAME = "Booking #";
+    public static final String STRIPE_PAYMENT_SUCCESS_STATUS = "succeeded";
+    public static final String STRIPE_PAYMENT_CANCEL_STATUS_REGEX = "requires_";
+
+    public static final String STRIPE_SESSION_PAYMENT_SUCCESS_STATUS = "paid";
+
+    public static final Long STRIPE_PRODUCT_QUANTITY = 1L;
 
     private Constants() {
     }
