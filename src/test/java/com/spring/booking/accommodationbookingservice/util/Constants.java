@@ -4,7 +4,6 @@ import com.spring.booking.accommodationbookingservice.domain.Amenity;
 import com.spring.booking.accommodationbookingservice.domain.enums.Type;
 import com.spring.booking.accommodationbookingservice.dto.amenity.AmenityDto;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -61,6 +60,7 @@ public final class Constants {
 
     public static final Long CORRECT_BOOKING_ID = 1L;
     public static final Long CORRECT_USER_ID = 1L;
+    public static final Long INCORRECT_USER_ID = 1000L;
     public static final Long INCORRECT_BOOKING_ID = 1000L;
     public static final LocalDate BOOKING_CHECK_IN_DATE = LocalDate.of(24, 12, 16);
     public static final LocalDate BOOKING_CHECK_OUT_DATE = LocalDate.of(24, 12, 18);
@@ -82,18 +82,7 @@ public final class Constants {
     public static final String CANCEL_PAYMENT_MESSAGE = ". You can made it later. "
             + "But keep it in mind, "
             + "that session expires for 24 hours";
-    public static final String STRIPE_PAYMENT_CURRENCY = "usd";
-    public static final String STRIPE_PAYMENT_METHOD = "pm_card_visa";
-    public static final String STRIPE_PAYMENT_METHOD_TYPE = "card";
-    public static final String STRIPE_PAYMENT_SUCCESS_URL = "https://example.com/success";
-    public static final String STRIPE_PAYMENT_CANCEL_URL = "https://example.com/cancel";
-    public static final String STRIPE_PAYMENT_PRODUCT_DATA_NAME = "Booking #";
-    public static final String STRIPE_PAYMENT_SUCCESS_STATUS = "succeeded";
-    public static final String STRIPE_PAYMENT_CANCEL_STATUS_REGEX = "requires_";
-
-    public static final String STRIPE_SESSION_PAYMENT_SUCCESS_STATUS = "paid";
-
-    public static final Long STRIPE_PRODUCT_QUANTITY = 1L;
+    public static final String CONFIRM_PAYMENT_MESSAGE = "";
 
     private Constants() {
     }

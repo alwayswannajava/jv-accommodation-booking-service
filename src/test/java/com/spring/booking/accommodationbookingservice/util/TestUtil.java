@@ -46,7 +46,12 @@ import com.spring.booking.accommodationbookingservice.dto.payment.PaymentRespons
 import lombok.SneakyThrows;
 import org.springframework.data.domain.PageRequest;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class TestUtil {
 
@@ -199,5 +204,53 @@ public final class TestUtil {
 
     public static PaymentCancelResponse createCancelPaymentResponse() {
         return new PaymentCancelResponse(CANCEL_PAYMENT_MESSAGE);
+    }
+
+    public static List<Booking> createBookings() {
+        Booking booking = new Booking();
+        booking.setId(CORRECT_BOOKING_ID);
+        booking.setCheckInDate(LocalDate.of(2024, 12, 18));
+        booking.setCheckOutDate(LocalDate.of(2024, 12, 24));
+        booking.setAccommodationId(CORRECT_ACCOMMODATION_ID);
+        booking.setUserId(CORRECT_USER_ID);
+        booking.setStatus(Status.PENDING);
+
+        Booking secondBooking = new Booking();
+        secondBooking.setId(2L);
+        secondBooking.setCheckInDate(LocalDate.of(2024, 12, 20));
+        secondBooking.setCheckOutDate(LocalDate.of(2024, 12, 28));
+        secondBooking.setAccommodationId(2L);
+        secondBooking.setUserId(CORRECT_USER_ID);
+        secondBooking.setStatus(Status.PENDING);
+
+        List<Booking> expected = new ArrayList<>();
+        expected.add(booking);
+        expected.add(secondBooking);
+        return expected;
+    }
+
+    public static List<Payment> createPayments() throws MalformedURLException {
+        Payment payment = new Payment();
+        payment.setId(1L);
+        payment.setStatus(Status.UNPAID);
+        payment.setSessionUrl(new URL("https://test_url"));
+        payment.setSessionId("test_id");
+        payment.setBookingId(CORRECT_BOOKING_ID);
+        payment.setAmountToPay(BigDecimal.valueOf(800.0)
+                .setScale(2, RoundingMode.HALF_DOWN));
+
+        Payment secondPayment = new Payment();
+        secondPayment.setId(2L);
+        secondPayment.setStatus(Status.PAID);
+        secondPayment.setSessionUrl(new URL("https://test_url_2"));
+        secondPayment.setSessionId("test_id_2");
+        secondPayment.setBookingId(2L);
+        secondPayment.setAmountToPay(BigDecimal.valueOf(1800.000)
+                .setScale(2, RoundingMode.HALF_DOWN));
+
+        List<Payment> expected = new ArrayList<>();
+        expected.add(payment);
+        expected.add(secondPayment);
+        return expected;
     }
 }
