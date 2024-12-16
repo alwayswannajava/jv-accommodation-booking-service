@@ -45,8 +45,8 @@ public class TelegramNotificationMessageBuilderImpl implements TelegramNotificat
 
     public String buildNotificationMessage(PaymentConfirmResponse response) {
         return String.format(TELEGRAM_CREATE_PAYMENT_NOTIFICATION_MESSAGE,
-                response.paymentUrl(),
-                response.paymentId(),
+                response.message(),
+                response.bookingId(),
                 response.status(),
                 response.amount());
     }

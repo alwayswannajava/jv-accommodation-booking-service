@@ -12,8 +12,8 @@ public interface PaymentService {
 
     PaymentResponse create(PaymentCreateRequestDto createRequestDto) throws StripeException;
 
-    PaymentConfirmResponse confirm() throws StripeException;
+    PaymentConfirmResponse confirm(String sessionId) throws StripeException;
 
-    PaymentCancelResponse cancel() throws StripeException;
+    PaymentCancelResponse cancel(String sessionId) throws StripeException;
 
 }

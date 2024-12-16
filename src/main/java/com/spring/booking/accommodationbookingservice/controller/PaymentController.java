@@ -50,15 +50,19 @@ public class PaymentController {
     @PreAuthorize("hasRole('CUSTOMER')")
     @Tag(name = "get", description = "GET methods of Accommodation APIs")
     @Operation(summary = "Success payment", description = "Create new payment")
-    public PaymentConfirmResponse success() throws StripeException {
-        return paymentService.confirm();
+    public PaymentConfirmResponse success(@RequestParam(value = "session_id")
+                                          String sessionId)
+            throws StripeException {
+        return paymentService.confirm(sessionId);
     }
 
     @GetMapping("/cancel")
     @PreAuthorize("hasRole('CUSTOMER')")
     @Tag(name = "get", description = "GET methods of Accommodation APIs")
     @Operation(summary = "Cancel payment", description = "Cancel payment")
-    public PaymentCancelResponse cancel() throws StripeException {
-        return paymentService.cancel();
+    public PaymentCancelResponse cancel(@RequestParam(value = "session_id")
+                                            String sessionId)
+            throws StripeException {
+        return paymentService.cancel(sessionId);
     }
 }

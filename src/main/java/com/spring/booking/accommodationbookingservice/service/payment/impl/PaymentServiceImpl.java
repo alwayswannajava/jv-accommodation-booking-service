@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PaymentServiceImpl implements PaymentService {
     private static final String PAYMENT_CONFIRM_MESSAGE = "Your payment was "
             + "successfully confirmed.";
-    private static final String PAYMENT_CANCEL_MESSAGE = ". You can made it later. "
+    private static final String PAYMENT_CANCEL_MESSAGE = "You can made it later. "
             + "But keep it in mind, "
             + "that session expires for 24 hours";
 
@@ -42,8 +42,6 @@ public class PaymentServiceImpl implements PaymentService {
     private final StripeClient stripeClient;
     private final TelegramNotificationMessageBuilder telegramNotificationMessageBuilder;
     private final TelegramNotificationService telegramNotificationService;
-
-    private Payment payment;
 
     @Override
     @Transactional(readOnly = true)
@@ -62,23 +60,26 @@ public class PaymentServiceImpl implements PaymentService {
                         + " not found "));
         Accommodation accommodation = checkAccommodationExist(booking.getAccommodationId());
         Session stripeSession = stripeClient.buildStripeSession(booking, accommodation);
-        payment = paymentMapper.toModel(stripeSession);
+        Payment payment = paymentMapper.toModel(stripeSession);
         payment.setStatus(Status.UNPAID);
         payment.setBookingId(booking.getId());
         return paymentMapper.toPaymentResponse(paymentRepository.save(payment));
     }
 
     @Override
-    public PaymentConfirmResponse confirm() throws StripeException {
+    public PaymentConfirmResponse confirm(String sessionId)
+            throws StripeException {
         stripeClient.buildStripeConfirmPayment();
+        Payment payment = paymentRepository.findBySessionId(sessionId)
+                .orElseThrow(() -> new EntityNotFoundException("Session with id: "
+                        + sessionId
+                        + " not found "));
         if (stripeClient.isPaymentSuccess()) {
             payment.setStatus(Status.PAID);
-            paymentRepository.save(payment);
         }
         PaymentConfirmResponse paymentConfirmResponse = new PaymentConfirmResponse(
                 PAYMENT_CONFIRM_MESSAGE,
-                payment.getSessionUrl(),
-                payment.getSessionId(),
+                payment.getBookingId(),
                 payment.getStatus(),
                 payment.getAmountToPay());
         String builtNotificationMessage = telegramNotificationMessageBuilder
@@ -88,10 +89,14 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentCancelResponse cancel() throws StripeException {
+    public PaymentCancelResponse cancel(String sessionId)
+            throws StripeException {
+        Payment payment = paymentRepository.findBySessionId(sessionId)
+                .orElseThrow(() -> new EntityNotFoundException("Session with id: "
+                        + sessionId
+                        + " not found "));
         if (stripeClient.isPaymentCanceled()) {
             payment.setStatus(Status.CANCELLED);
-            paymentRepository.save(payment);
         }
         return new PaymentCancelResponse(PAYMENT_CANCEL_MESSAGE);
     }
@@ -103,7 +108,8 @@ public class PaymentServiceImpl implements PaymentService {
                 .findFirst()
                 .orElseThrow(() -> new PaymentProcessingException(
                         "Payment can't be created, because "
-                        + "accommodation is not present in our booking system. Maybe it was deleted"
-                        + " before. We apologize for the inconvenience"));
+                                + "accommodation is not present in our booking system. "
+                                + "Maybe it was deleted"
+                                + " before. We apologize for the inconvenience"));
     }
 }
