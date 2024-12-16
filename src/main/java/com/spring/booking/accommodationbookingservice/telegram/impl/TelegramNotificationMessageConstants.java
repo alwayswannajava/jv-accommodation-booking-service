@@ -33,7 +33,7 @@ public final class TelegramNotificationMessageConstants {
 
     static final String TELEGRAM_CREATE_PAYMENT_NOTIFICATION_MESSAGE = """
             💰Accepted payment:
-            🌐Url: %s
+            🌐Message: %s
             🆔ID: %s
             ✅Status: %s
             💲Amount to pay: %s

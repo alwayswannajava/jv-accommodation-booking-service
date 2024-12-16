@@ -62,6 +62,7 @@ public class StripeClient {
                         .build())
                 .build();
         stripeSession = Session.create(sessionCreateParams);
+        initPrePayment();
         return stripeSession;
     }
 
@@ -88,7 +89,7 @@ public class StripeClient {
 
     public boolean isPaymentCanceled() throws StripeException {
         PaymentIntent resource = PaymentIntent.retrieve(stripePayment.getId());
-        if (stripePayment.toString().startsWith(STRIPE_PAYMENT_CANCEL_STATUS_REGEX)) {
+        if (stripePayment.getStatus().startsWith(STRIPE_PAYMENT_CANCEL_STATUS_REGEX)) {
             PaymentIntentCancelParams params = PaymentIntentCancelParams
                     .builder()
                     .build();
@@ -108,5 +109,15 @@ public class StripeClient {
     private int calculateDifferenceBetweenTwoDatesInDays(
             LocalDate checkInDate, LocalDate checkOutDate) {
         return Period.between(checkInDate, checkOutDate).getDays();
+    }
+
+    private void initPrePayment() throws StripeException {
+        PaymentIntentCreateParams createParams = PaymentIntentCreateParams
+                .builder()
+                .setCurrency(STRIPE_PAYMENT_CURRENCY)
+                .setConfirm(false)
+                .setAmount(stripeSession.getAmountTotal())
+                .build();
+        stripePayment = PaymentIntent.create(createParams);
     }
 }

@@ -1,5 +1,6 @@
 package com.spring.booking.accommodationbookingservice.exception;
 
+import com.stripe.exception.InvalidRequestException;
 import io.jsonwebtoken.JwtException;
 import jakarta.validation.UnexpectedTypeException;
 import java.time.LocalDateTime;
@@ -141,6 +142,19 @@ public class GlobalExceptionHandler {
             DataIntegrityViolationException ex) {
         List<String> errors = new ArrayList<>();
         errors.add(EMAIL_ALREADY_EXISTS);
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                LocalDateTime.now(),
+                errors);
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<Object> handleInvalidRequestExceptionViolationException(
+            InvalidRequestException ex) {
+        List<String> errors = new ArrayList<>();
+        errors.add(ex.getMessage());
 
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.CONFLICT.value(),
