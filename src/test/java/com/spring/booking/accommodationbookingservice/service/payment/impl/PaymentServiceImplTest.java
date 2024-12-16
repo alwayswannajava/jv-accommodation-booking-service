@@ -5,7 +5,11 @@ import static com.spring.booking.accommodationbookingservice.util.Constants.CORR
 import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_BOOKING_ID;
 import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_SESSION_ID;
 import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_USER_ID;
+import static com.spring.booking.accommodationbookingservice.util.Constants.EXPECTED_NOT_FOUND_BOOKING_ENTITY_MESSAGE;
+import static com.spring.booking.accommodationbookingservice.util.Constants.EXPECTED_NOT_FOUND_SESSION_MESSAGE;
+import static com.spring.booking.accommodationbookingservice.util.Constants.INCORRECT_SESSION_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -19,6 +23,8 @@ import com.spring.booking.accommodationbookingservice.dto.payment.PaymentCancelR
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentConfirmResponse;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentCreateRequestDto;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentResponse;
+import com.spring.booking.accommodationbookingservice.exception.EntityNotFoundException;
+import com.spring.booking.accommodationbookingservice.exception.PaymentProcessingException;
 import com.spring.booking.accommodationbookingservice.mapper.PaymentMapper;
 import com.spring.booking.accommodationbookingservice.repository.AccommodationRepository;
 import com.spring.booking.accommodationbookingservice.repository.BookingRepository;
@@ -130,6 +136,40 @@ class PaymentServiceImplTest {
         verify(paymentMapper).toPaymentResponse(payment);
         verify(stripeClient).buildStripeSession(booking, accommodation);
         verifyNoMoreInteractions(paymentRepository, paymentMapper);
+    }
+
+    @Test
+    @DisplayName("Test create() method by non-existent booking")
+    void create_InvalidBooking_ThrowEntityNotFoundException() {
+        when(bookingRepository.findById(createRequestDto.bookingId()))
+                .thenReturn(Optional.empty());
+        EntityNotFoundException entityNotFoundException = assertThrows(
+                EntityNotFoundException.class,
+                () -> paymentService.create(createRequestDto)
+        );
+
+        String actualMessage = entityNotFoundException.getMessage();
+        assertEquals(EXPECTED_NOT_FOUND_BOOKING_ENTITY_MESSAGE, actualMessage);
+
+        verify(bookingRepository).findById(createRequestDto.bookingId());
+        verifyNoMoreInteractions(bookingRepository);
+    }
+
+    @Test
+    @DisplayName("Test confirm() method by non-existent session")
+    void confirm_InvalidBooking_ThrowEntityNotFoundException() {
+        when(paymentRepository.findBySessionId(INCORRECT_SESSION_ID))
+                .thenReturn(Optional.empty());
+        PaymentProcessingException paymentProcessingException = assertThrows(
+                PaymentProcessingException.class,
+                () -> paymentService.confirm(INCORRECT_SESSION_ID)
+        );
+
+        String actualMessage = paymentProcessingException.getMessage();
+        assertEquals(EXPECTED_NOT_FOUND_SESSION_MESSAGE, actualMessage);
+
+        verify(paymentRepository).findBySessionId(INCORRECT_SESSION_ID);
+        verifyNoMoreInteractions(paymentRepository);
     }
 
     @Test
