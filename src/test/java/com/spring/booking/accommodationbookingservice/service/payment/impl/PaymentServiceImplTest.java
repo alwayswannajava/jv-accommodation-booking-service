@@ -1,13 +1,11 @@
 package com.spring.booking.accommodationbookingservice.service.payment.impl;
 
-import static com.spring.booking.accommodationbookingservice.util.Constants.BOOKING_ACCOMMODATION_ID;
 import static com.spring.booking.accommodationbookingservice.util.Constants.CONFIRM_PAYMENT_MESSAGE;
 import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_ACCOMMODATION_ID;
 import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_BOOKING_ID;
+import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_SESSION_ID;
 import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_USER_ID;
-import static com.spring.booking.accommodationbookingservice.util.Constants.INCORRECT_BOOKING_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -17,7 +15,6 @@ import static org.mockito.Mockito.when;
 import com.spring.booking.accommodationbookingservice.domain.Accommodation;
 import com.spring.booking.accommodationbookingservice.domain.Booking;
 import com.spring.booking.accommodationbookingservice.domain.Payment;
-import com.spring.booking.accommodationbookingservice.domain.enums.Status;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentCancelResponse;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentConfirmResponse;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentCreateRequestDto;
@@ -32,8 +29,8 @@ import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificat
 import com.spring.booking.accommodationbookingservice.util.TestUtil;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -124,7 +121,9 @@ class PaymentServiceImplTest {
         when(paymentMapper.toPaymentResponse(payment)).thenReturn(paymentResponse);
         when(paymentRepository.save(payment)).thenReturn(payment);
 
-        paymentService.create(createRequestDto);
+        PaymentResponse expected = paymentResponse;
+        PaymentResponse actual = paymentService.create(createRequestDto);
+        assertEquals(expected, actual);
 
         verify(paymentRepository).save(payment);
         verify(paymentMapper).toModel(session);
@@ -137,14 +136,16 @@ class PaymentServiceImplTest {
     @DisplayName("Test confirm() method")
     void confirm_ValidPayment_ReturnConfirmPaymentResponse() throws StripeException {
         doNothing().when(stripeClient).buildStripeConfirmPayment();
-        when(paymentRepository.save(payment)).thenReturn(payment);
         when(stripeClient.isPaymentSuccess()).thenReturn(true);
+        when(paymentRepository.findBySessionId(CORRECT_SESSION_ID))
+                .thenReturn(Optional.ofNullable(payment));
         when(telegramNotificationMessageBuilder.buildNotificationMessage(confirmResponse))
                 .thenReturn(CONFIRM_PAYMENT_MESSAGE);
 
-        paymentService.confirm();
+        PaymentConfirmResponse expected = confirmResponse;
+        PaymentConfirmResponse actual = paymentService.confirm(CORRECT_SESSION_ID);
+        assertEquals(expected, actual);
 
-        verify(paymentRepository).save(payment);
         verify(stripeClient).buildStripeConfirmPayment();
         verify(stripeClient).isPaymentSuccess();
         verify(telegramNotificationMessageBuilder).buildNotificationMessage(confirmResponse);
@@ -155,12 +156,14 @@ class PaymentServiceImplTest {
     @Test
     @DisplayName("Test cancel() method")
     void cancel_ValidPayment_ReturnCancelPaymentResponse() throws StripeException {
-        when(paymentRepository.save(payment)).thenReturn(payment);
+        when(paymentRepository.findBySessionId(CORRECT_SESSION_ID))
+                .thenReturn(Optional.ofNullable(payment));
         when(stripeClient.isPaymentCanceled()).thenReturn(false);
 
-        paymentService.cancel();
+        PaymentCancelResponse expected = cancelResponse;
+        PaymentCancelResponse actual = paymentService.cancel(CORRECT_SESSION_ID);
+        assertEquals(expected, actual);
 
-        verify(paymentRepository).save(payment);
         verify(stripeClient).isPaymentCanceled();
         verifyNoMoreInteractions(paymentRepository, stripeClient);
     }

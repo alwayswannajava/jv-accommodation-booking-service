@@ -34,7 +34,6 @@ public final class Constants {
             + INCORRECT_ACCOMMODATION_ID
             + " not found ";
 
-
     public static final String TELEGRAM_NOTIFICATION_CREATE_ACCOMMODATION_MESSAGE = """
             ✅Available accommodation:
             🆔ID: 1
@@ -79,7 +78,7 @@ public final class Constants {
     public static final String CORRECT_SESSION_ID = "cs_test_a1LbRYkF36pyppi7C0KJNuzgwOKm";
     public static final String SUCCESS_PAYMENT_MESSAGE = "Your payment was "
             + "successfully confirmed.";
-    public static final String CANCEL_PAYMENT_MESSAGE = ". You can made it later. "
+    public static final String CANCEL_PAYMENT_MESSAGE = "You can made it later. "
             + "But keep it in mind, "
             + "that session expires for 24 hours";
     public static final String CONFIRM_PAYMENT_MESSAGE = "";

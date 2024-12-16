@@ -39,7 +39,8 @@ class BookingRepositoryTest {
     @Sql(scripts = "classpath:db/scripts/remove-booking-test-data.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void findByUserIdAndStatus_ValidData_ReturnListOfBookings() {
-        List<Booking> actual = bookingRepository.findByUserIdAndStatus(CORRECT_USER_ID, Status.PENDING);
+        List<Booking> actual = bookingRepository
+                .findByUserIdAndStatus(CORRECT_USER_ID, Status.PENDING);
         Collections.reverse(actual);
         assertEquals(expectedBookingList, actual);
         assertEquals(expectedBookingList.size(), actual.size());

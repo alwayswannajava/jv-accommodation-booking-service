@@ -26,8 +26,8 @@ import com.spring.booking.accommodationbookingservice.repository.BookingReposito
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageBuilder;
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
 import com.spring.booking.accommodationbookingservice.util.TestUtil;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -155,7 +155,8 @@ class BookingServiceImplTest {
     void findById_BookingNotExists_ThrowEntityNotFoundException() {
         when(bookingRepository.findById(INCORRECT_BOOKING_ID))
                 .thenReturn(Optional.empty());
-        EntityNotFoundException entityNotFoundException = assertThrows(EntityNotFoundException.class,
+        EntityNotFoundException entityNotFoundException = assertThrows(
+                EntityNotFoundException.class,
                 () -> bookingService.findById(INCORRECT_BOOKING_ID));
 
         String actualMessage = entityNotFoundException.getMessage();
@@ -184,7 +185,8 @@ class BookingServiceImplTest {
     void update_BookingNotExists_ThrowEntityNotFoundException() {
         when(bookingRepository.findById(INCORRECT_BOOKING_ID))
                 .thenReturn(Optional.empty());
-        EntityNotFoundException entityNotFoundException = assertThrows(EntityNotFoundException.class,
+        EntityNotFoundException entityNotFoundException = assertThrows(
+                EntityNotFoundException.class,
                 () -> bookingService.findById(INCORRECT_BOOKING_ID));
 
         String actualMessage = entityNotFoundException.getMessage();

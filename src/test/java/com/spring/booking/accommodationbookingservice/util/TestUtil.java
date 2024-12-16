@@ -43,8 +43,6 @@ import com.spring.booking.accommodationbookingservice.dto.payment.PaymentCancelR
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentConfirmResponse;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentCreateRequestDto;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentResponse;
-import lombok.SneakyThrows;
-import org.springframework.data.domain.PageRequest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.MalformedURLException;
@@ -52,6 +50,8 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.SneakyThrows;
+import org.springframework.data.domain.PageRequest;
 
 public final class TestUtil {
 
@@ -196,8 +196,7 @@ public final class TestUtil {
     @SneakyThrows
     public static PaymentConfirmResponse createConfirmPaymentResponse() {
         return new PaymentConfirmResponse(SUCCESS_PAYMENT_MESSAGE,
-                new URL(CORRECT_PAYMENT_URL),
-                CORRECT_SESSION_ID,
+                CORRECT_BOOKING_ID,
                 Status.PAID,
                 BigDecimal.valueOf(800));
     }

@@ -132,7 +132,8 @@ class AccommodationServiceImplTest {
     void findById_AccommodationNotExists_ThrowEntityNotFoundException() {
         when(accommodationRepository.findByIdFetchAddressAndAmenities(INCORRECT_ACCOMMODATION_ID))
                 .thenReturn(Optional.empty());
-        EntityNotFoundException entityNotFoundException = assertThrows(EntityNotFoundException.class,
+        EntityNotFoundException entityNotFoundException = assertThrows(
+                EntityNotFoundException.class,
                 () -> accommodationService.findById(INCORRECT_ACCOMMODATION_ID));
 
         String actualMessage = entityNotFoundException.getMessage();
@@ -143,7 +144,8 @@ class AccommodationServiceImplTest {
     @Test
     @DisplayName("Test update() method")
     void update_AccommodationExists_ReturnAccommodationResponse() {
-        when(accommodationMapper.toResponse(accommodation)).thenReturn(updatedAccommodationResponse);
+        when(accommodationMapper.toResponse(accommodation))
+                .thenReturn(updatedAccommodationResponse);
         when(accommodationRepository.findByIdFetchAddressAndAmenities(CORRECT_ACCOMMODATION_ID))
                 .thenReturn(Optional.ofNullable(accommodation));
 
@@ -159,9 +161,10 @@ class AccommodationServiceImplTest {
     @Test
     @DisplayName("Test update() method by non-existent accommodation")
     void update_AccommodationNotExists_ThrowEntityNotFoundException() {
-       when(accommodationRepository.findByIdFetchAddressAndAmenities(INCORRECT_ACCOMMODATION_ID))
-               .thenReturn(Optional.empty());
-        EntityNotFoundException entityNotFoundException = assertThrows(EntityNotFoundException.class,
+        when(accommodationRepository.findByIdFetchAddressAndAmenities(INCORRECT_ACCOMMODATION_ID))
+                .thenReturn(Optional.empty());
+        EntityNotFoundException entityNotFoundException = assertThrows(
+                EntityNotFoundException.class,
                 () -> accommodationService.findById(INCORRECT_ACCOMMODATION_ID));
 
         String actualMessage = entityNotFoundException.getMessage();
@@ -179,7 +182,7 @@ class AccommodationServiceImplTest {
                         () -> {
                             accommodation.setDeleted(true);
                             accommodationService.deleteById(CORRECT_ACCOMMODATION_ID);
-                });
+                        });
 
         String actualMessage = accommodationProcessingException.getMessage();
 

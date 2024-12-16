@@ -6,14 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.spring.booking.accommodationbookingservice.domain.Payment;
 import com.spring.booking.accommodationbookingservice.util.TestUtil;
+import java.net.MalformedURLException;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
-import java.net.MalformedURLException;
-import java.util.List;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -43,5 +43,4 @@ class PaymentRepositoryTest {
         List<Payment> actual = paymentRepository.findAllFetchBookingByUserId(INCORRECT_USER_ID);
         assertEquals(0, actual.size());
     }
-
 }
