@@ -71,7 +71,8 @@ public final class Constants {
     public static final String EXPECTED_NOT_FOUND_BOOKING_ENTITY_MESSAGE = "Can't find "
             + "any bookings with bookingId: "
             + INCORRECT_BOOKING_ID;
-
+    public static final String EXPECTED_NOT_FOUND_BOOKING_PAYMENT_ENTITY_MESSAGE =
+            "Can't find any bookings with bookingId: " + CORRECT_BOOKING_ID;
     public static final Long CORRECT_PAYMENT_ID = 1L;
     public static final String CORRECT_PAYMENT_URL = "https://checkout.stripe.com/c/pay/cs_test_a194p"
             + "Cj40l2l67Gvyt94XCTjZ3w2XZxTUtC47wqq5LIglgjiG2B4TxX4Dz#fi";
@@ -82,7 +83,31 @@ public final class Constants {
             + "But keep it in mind, "
             + "that session expires for 24 hours";
     public static final String CONFIRM_PAYMENT_MESSAGE = "";
+    public static final String INCORRECT_SESSION_ID = "cs_test_12312???das,ca";
 
+    public static final String CORRECT_USER_EMAIL = "ivan@gmail.com";
+    public static final String CORRECT_USER_PASSWORD = "strongPassword";
+    public static final String CORRECT_USER_REPEAT_PASSWORD = "strongPassword";
+    public static final String CORRECT_USER_FIRST_NAME = "Ivan";
+    public static final String CORRECT_USER_LAST_NAME = "Mazepa";
+
+    public static final Long CORRECT_ROLE_ID = 1L;
+
+    public static final String UPDATE_USER_PASSWORD = "updatePassword";
+    public static final String UPDATE_USER_REPEAT_PASSWORD = "updatePassword";
+    public static final String UPDATE_FIRST_NAME = "Bogdan";
+
+    public static final String EXPECTED_DUPLICATE_EMAIL_USER_REGISTER_MESSAGE =
+            "Can't register user, duplicate email";
+    public static final String EXPECTED_NOT_FOUND_SESSION_MESSAGE = "Session with id: "
+            + INCORRECT_SESSION_ID
+            + " not found ";
+    public static final String ENCODED_USER_PASSWORD = "$2a$10$YJU0n0xMnO8YShyAT41c"
+            + "TunvtEcQgQc59ZPRrRRokRAv4dj6mh2vC";
+    public static final String UPDATED_ENCODED_USER_PASSWORD = "$2a$10$54qQo13hTcXxp"
+            + "J6UF91D7esMgmQll9YkZAAfd13tUkFRnCbcIsFM2";
+
+    public static final String ACCOMMODATION_URL = "/accommodations";
     private Constants() {
     }
 }

@@ -19,19 +19,31 @@ import static com.spring.booking.accommodationbookingservice.util.Constants.CORR
 import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_LOCATION_ID;
 import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_PAYMENT_ID;
 import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_PAYMENT_URL;
+import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_ROLE_ID;
 import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_SESSION_ID;
+import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_USER_EMAIL;
+import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_USER_FIRST_NAME;
 import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_USER_ID;
+import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_USER_LAST_NAME;
+import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_USER_PASSWORD;
+import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_USER_REPEAT_PASSWORD;
 import static com.spring.booking.accommodationbookingservice.util.Constants.SUCCESS_PAYMENT_MESSAGE;
 import static com.spring.booking.accommodationbookingservice.util.Constants.UPDATE_ACCOMMODATION_CITY;
 import static com.spring.booking.accommodationbookingservice.util.Constants.UPDATE_ACCOMMODATION_DAILY_RATE;
 import static com.spring.booking.accommodationbookingservice.util.Constants.UPDATE_ACCOMMODATION_TYPE;
 import static com.spring.booking.accommodationbookingservice.util.Constants.UPDATE_BOOKING_CHECK_IN_DATE;
 import static com.spring.booking.accommodationbookingservice.util.Constants.UPDATE_BOOKING_CHECK_OUT_DATE;
+import static com.spring.booking.accommodationbookingservice.util.Constants.UPDATE_FIRST_NAME;
+import static com.spring.booking.accommodationbookingservice.util.Constants.UPDATE_USER_PASSWORD;
+import static com.spring.booking.accommodationbookingservice.util.Constants.UPDATE_USER_REPEAT_PASSWORD;
 
 import com.spring.booking.accommodationbookingservice.domain.Accommodation;
 import com.spring.booking.accommodationbookingservice.domain.Booking;
 import com.spring.booking.accommodationbookingservice.domain.Location;
 import com.spring.booking.accommodationbookingservice.domain.Payment;
+import com.spring.booking.accommodationbookingservice.domain.Role;
+import com.spring.booking.accommodationbookingservice.domain.User;
+import com.spring.booking.accommodationbookingservice.domain.enums.RoleName;
 import com.spring.booking.accommodationbookingservice.domain.enums.Status;
 import com.spring.booking.accommodationbookingservice.dto.accommodation.AccommodationCreateRequestDto;
 import com.spring.booking.accommodationbookingservice.dto.accommodation.AccommodationResponse;
@@ -50,6 +62,12 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import com.spring.booking.accommodationbookingservice.dto.role.RoleUpdateRequestDto;
+import com.spring.booking.accommodationbookingservice.dto.user.UserRegistrationRequestDto;
+import com.spring.booking.accommodationbookingservice.dto.user.UserResponse;
+import com.spring.booking.accommodationbookingservice.dto.user.UserUpdateRequestDto;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.PageRequest;
 
@@ -251,5 +269,79 @@ public final class TestUtil {
         expected.add(payment);
         expected.add(secondPayment);
         return expected;
+    }
+
+    public static UserRegistrationRequestDto createRegisterUser() {
+        return new UserRegistrationRequestDto(CORRECT_USER_EMAIL,
+                CORRECT_USER_PASSWORD,
+                CORRECT_USER_REPEAT_PASSWORD,
+                CORRECT_USER_FIRST_NAME,
+                CORRECT_USER_LAST_NAME);
+    }
+
+    public static RoleUpdateRequestDto createRoleUpdateDto() {
+        return new RoleUpdateRequestDto(Set.of(RoleName.ROLE_CUSTOMER));
+    }
+
+
+    public static UserUpdateRequestDto createUserUpdateDto() {
+        return new UserUpdateRequestDto(CORRECT_USER_EMAIL,
+                UPDATE_USER_PASSWORD,
+                UPDATE_USER_REPEAT_PASSWORD,
+                CORRECT_USER_FIRST_NAME,
+                CORRECT_USER_LAST_NAME);
+    }
+
+    public static User createUser() {
+        User user = new User();
+        user.setId(CORRECT_USER_ID);
+        user.setEmail(CORRECT_USER_EMAIL);
+        user.setPassword(CORRECT_USER_PASSWORD);
+        user.setFirstName(CORRECT_USER_FIRST_NAME);
+        user.setLastName(CORRECT_USER_LAST_NAME);
+        Role role = createCustomerRole();
+        user.setRoles(Set.of(role));
+        return user;
+    }
+
+    public static UserResponse createUserResponse() {
+        return new UserResponse(CORRECT_USER_ID,
+                CORRECT_USER_EMAIL,
+                CORRECT_USER_FIRST_NAME,
+                CORRECT_USER_LAST_NAME);
+    }
+
+    public static Role createCustomerRole() {
+        Role role = new Role();
+        role.setId(CORRECT_ROLE_ID);
+        role.setRole(RoleName.ROLE_CUSTOMER);
+        return role;
+    }
+
+    public static Role createAdminRole() {
+        Role role = new Role();
+        role.setId(CORRECT_ROLE_ID);
+        role.setRole(RoleName.ROLE_ADMIN);
+        return role;
+    }
+
+    public static UserResponse createUpdatedUserResponse() {
+        return new UserResponse(CORRECT_USER_ID,
+                CORRECT_USER_EMAIL,
+                UPDATE_FIRST_NAME,
+                CORRECT_USER_LAST_NAME);
+    }
+
+    public static User createUpdatedUser() {
+        User user = new User();
+        user.setId(CORRECT_USER_ID);
+        user.setEmail(CORRECT_USER_EMAIL);
+        user.setPassword(UPDATE_USER_PASSWORD);
+        user.setFirstName(UPDATE_FIRST_NAME);
+        user.setLastName(CORRECT_USER_LAST_NAME);
+        Role customer = createCustomerRole();
+        Role admin = createAdminRole();
+        user.setRoles(Set.of(customer, admin));
+        return user;
     }
 }

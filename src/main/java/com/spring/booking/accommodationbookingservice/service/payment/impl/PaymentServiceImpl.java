@@ -55,9 +55,9 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentResponse create(PaymentCreateRequestDto createRequestDto) throws StripeException {
         Booking booking = bookingRepository.findById(createRequestDto.bookingId())
-                .orElseThrow(() -> new EntityNotFoundException("Booking with id: "
-                        + createRequestDto.bookingId()
-                        + " not found "));
+                .orElseThrow(() -> new EntityNotFoundException("Can't find any "
+                        + "bookings with bookingId: "
+                        + createRequestDto.bookingId()));
         Accommodation accommodation = checkAccommodationExist(booking.getAccommodationId());
         Session stripeSession = stripeClient.buildStripeSession(booking, accommodation);
         Payment payment = paymentMapper.toModel(stripeSession);
@@ -71,7 +71,7 @@ public class PaymentServiceImpl implements PaymentService {
             throws StripeException {
         stripeClient.buildStripeConfirmPayment();
         Payment payment = paymentRepository.findBySessionId(sessionId)
-                .orElseThrow(() -> new EntityNotFoundException("Session with id: "
+                .orElseThrow(() -> new PaymentProcessingException("Session with id: "
                         + sessionId
                         + " not found "));
         if (stripeClient.isPaymentSuccess()) {
@@ -92,7 +92,7 @@ public class PaymentServiceImpl implements PaymentService {
     public PaymentCancelResponse cancel(String sessionId)
             throws StripeException {
         Payment payment = paymentRepository.findBySessionId(sessionId)
-                .orElseThrow(() -> new EntityNotFoundException("Session with id: "
+                .orElseThrow(() -> new PaymentProcessingException("Session with id: "
                         + sessionId
                         + " not found "));
         if (stripeClient.isPaymentCanceled()) {

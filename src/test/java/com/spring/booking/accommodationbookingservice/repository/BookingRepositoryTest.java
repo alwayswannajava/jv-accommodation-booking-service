@@ -8,7 +8,6 @@ import com.spring.booking.accommodationbookingservice.domain.Booking;
 import com.spring.booking.accommodationbookingservice.domain.enums.Status;
 import com.spring.booking.accommodationbookingservice.util.TestUtil;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +19,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase
 class BookingRepositoryTest {
     @Autowired
     private BookingRepository bookingRepository;
@@ -41,7 +40,6 @@ class BookingRepositoryTest {
     void findByUserIdAndStatus_ValidData_ReturnListOfBookings() {
         List<Booking> actual = bookingRepository
                 .findByUserIdAndStatus(CORRECT_USER_ID, Status.PENDING);
-        Collections.reverse(actual);
         assertEquals(expectedBookingList, actual);
         assertEquals(expectedBookingList.size(), actual.size());
     }
