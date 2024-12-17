@@ -70,8 +70,9 @@ public final class Constants {
 
     public static final String EXPECTED_NOT_FOUND_BOOKING_ENTITY_MESSAGE = "Can't find "
             + "any bookings with bookingId: "
-            + CORRECT_BOOKING_ID;
-
+            + INCORRECT_BOOKING_ID;
+    public static final String EXPECTED_NOT_FOUND_BOOKING_PAYMENT_ENTITY_MESSAGE =
+            "Can't find any bookings with bookingId: " + CORRECT_BOOKING_ID;
     public static final Long CORRECT_PAYMENT_ID = 1L;
     public static final String CORRECT_PAYMENT_URL = "https://checkout.stripe.com/c/pay/cs_test_a194p"
             + "Cj40l2l67Gvyt94XCTjZ3w2XZxTUtC47wqq5LIglgjiG2B4TxX4Dz#fi";
@@ -106,6 +107,7 @@ public final class Constants {
     public static final String UPDATED_ENCODED_USER_PASSWORD = "$2a$10$54qQo13hTcXxp"
             + "J6UF91D7esMgmQll9YkZAAfd13tUkFRnCbcIsFM2";
 
+    public static final String ACCOMMODATION_URL = "/accommodations";
     private Constants() {
     }
 }

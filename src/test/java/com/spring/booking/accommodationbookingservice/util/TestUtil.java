@@ -280,8 +280,7 @@ public final class TestUtil {
     }
 
     public static RoleUpdateRequestDto createRoleUpdateDto() {
-        return new RoleUpdateRequestDto(Set.of(RoleName.ROLE_CUSTOMER,
-                RoleName.ROLE_ADMIN));
+        return new RoleUpdateRequestDto(Set.of(RoleName.ROLE_CUSTOMER));
     }
 
 
@@ -300,7 +299,7 @@ public final class TestUtil {
         user.setPassword(CORRECT_USER_PASSWORD);
         user.setFirstName(CORRECT_USER_FIRST_NAME);
         user.setLastName(CORRECT_USER_LAST_NAME);
-        Role role = createRole();
+        Role role = createCustomerRole();
         user.setRoles(Set.of(role));
         return user;
     }
@@ -312,10 +311,17 @@ public final class TestUtil {
                 CORRECT_USER_LAST_NAME);
     }
 
-    public static Role createRole() {
+    public static Role createCustomerRole() {
         Role role = new Role();
         role.setId(CORRECT_ROLE_ID);
         role.setRole(RoleName.ROLE_CUSTOMER);
+        return role;
+    }
+
+    public static Role createAdminRole() {
+        Role role = new Role();
+        role.setId(CORRECT_ROLE_ID);
+        role.setRole(RoleName.ROLE_ADMIN);
         return role;
     }
 
@@ -333,8 +339,9 @@ public final class TestUtil {
         user.setPassword(UPDATE_USER_PASSWORD);
         user.setFirstName(UPDATE_FIRST_NAME);
         user.setLastName(CORRECT_USER_LAST_NAME);
-        Role role = createRole();
-        user.setRoles(Set.of(role));
+        Role customer = createCustomerRole();
+        Role admin = createAdminRole();
+        user.setRoles(Set.of(customer, admin));
         return user;
     }
 }

@@ -6,6 +6,7 @@ import static com.spring.booking.accommodationbookingservice.util.Constants.CORR
 import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_SESSION_ID;
 import static com.spring.booking.accommodationbookingservice.util.Constants.CORRECT_USER_ID;
 import static com.spring.booking.accommodationbookingservice.util.Constants.EXPECTED_NOT_FOUND_BOOKING_ENTITY_MESSAGE;
+import static com.spring.booking.accommodationbookingservice.util.Constants.EXPECTED_NOT_FOUND_BOOKING_PAYMENT_ENTITY_MESSAGE;
 import static com.spring.booking.accommodationbookingservice.util.Constants.EXPECTED_NOT_FOUND_SESSION_MESSAGE;
 import static com.spring.booking.accommodationbookingservice.util.Constants.INCORRECT_SESSION_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -149,7 +150,7 @@ class PaymentServiceImplTest {
         );
 
         String actualMessage = entityNotFoundException.getMessage();
-        assertEquals(EXPECTED_NOT_FOUND_BOOKING_ENTITY_MESSAGE, actualMessage);
+        assertEquals(EXPECTED_NOT_FOUND_BOOKING_PAYMENT_ENTITY_MESSAGE, actualMessage);
 
         verify(bookingRepository).findById(createRequestDto.bookingId());
         verifyNoMoreInteractions(bookingRepository);

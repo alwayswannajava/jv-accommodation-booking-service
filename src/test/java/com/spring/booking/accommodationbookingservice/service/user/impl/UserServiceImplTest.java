@@ -84,7 +84,7 @@ class UserServiceImplTest {
                 .thenReturn(false);
         when(userMapper.toUser(registrationRequestDto)).thenReturn(user);
         when(userMapper.toResponse(user)).thenReturn(userResponse);
-        Role role = TestUtil.createRole();
+        Role role = TestUtil.createCustomerRole();
         when(roleRepository.findByRole(RoleName.ROLE_CUSTOMER))
                 .thenReturn(role);
         when(passwordEncoder.encode(user.getPassword()))
@@ -121,10 +121,25 @@ class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test updateRole() method")
+    void updateRole_ValidRoleUpdateRequestDto_ReturnUserResponse() {
+        when(userRepository.findById(CORRECT_USER_ID))
+                .thenReturn(Optional.of(user));
+        when(userMapper.toResponse(user)).thenReturn(updatedUserResponse);
+        when(roleRepository.findByRole(RoleName.ROLE_CUSTOMER))
+                .thenReturn(TestUtil.createCustomerRole());
+
+        UserResponse expected = updatedUserResponse;
+        UserResponse actual = userService.updateRole(roleUpdateRequestDto, CORRECT_USER_ID);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
     @DisplayName("Test updateUserInfo() method")
     void updateUserInfo_ValidUserUpdateRequestDto_ReturnUserResponse() {
         when(userRepository.findById(CORRECT_USER_ID))
-                .thenReturn(Optional.ofNullable(user));
+                .thenReturn(Optional.of(user));
         when(userMapper.toUser(user, userUpdateRequestDto)).thenReturn(updatedUser);
         when(passwordEncoder.encode(updatedUser.getPassword()))
                 .thenReturn(UPDATED_ENCODED_USER_PASSWORD);
