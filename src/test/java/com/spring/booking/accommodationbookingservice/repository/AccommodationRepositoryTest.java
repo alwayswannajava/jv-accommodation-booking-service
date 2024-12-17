@@ -15,7 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase
 class AccommodationRepositoryTest {
     @Autowired
     private AccommodationRepository accommodationRepository;
@@ -40,7 +40,7 @@ class AccommodationRepositoryTest {
     }
 
     @Test
-    @DisplayName("Test findAllFetchAddressAndAmenities method()")
+    @DisplayName("Test findAllFetchAddressAndAmenities method() with empty data")
     void findAllFetchAddressAndAmenities_EmptyData_ReturnEmptyPage() {
         Page<Accommodation> actual = accommodationRepository
                 .findAllFetchAddressAndAmenities(pageRequest);
