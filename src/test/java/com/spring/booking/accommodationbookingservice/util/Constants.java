@@ -107,7 +107,6 @@ public final class Constants {
     public static final String UPDATED_ENCODED_USER_PASSWORD = "$2a$10$54qQo13hTcXxp"
             + "J6UF91D7esMgmQll9YkZAAfd13tUkFRnCbcIsFM2";
 
-    public static final String ACCOMMODATION_URL = "/accommodations";
     private Constants() {
     }
 }

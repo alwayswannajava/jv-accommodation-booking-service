@@ -5,7 +5,7 @@ import static com.spring.booking.accommodationbookingservice.telegram.impl.Teleg
 import com.spring.booking.accommodationbookingservice.domain.Booking;
 import com.spring.booking.accommodationbookingservice.domain.enums.Status;
 import com.spring.booking.accommodationbookingservice.repository.BookingRepository;
-import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageBuilder;
+import com.spring.booking.accommodationbookingservice.telegram.NotificationMessageBuilder;
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class BookingSchedulerImpl implements BookingScheduler {
     private final BookingRepository bookingRepository;
     private final TelegramNotificationService telegramNotificationService;
-    private final TelegramNotificationMessageBuilder telegramNotificationMessageBuilder;
+    private final NotificationMessageBuilder notificationMessageBuilder;
 
     @Override
     @Scheduled(fixedRate = 500000)
@@ -30,7 +30,7 @@ public class BookingSchedulerImpl implements BookingScheduler {
             bookings.forEach(booking -> {
                 booking.setStatus(Status.EXPIRED);
                 bookingRepository.save(booking);
-                String builtNotificationMessage = telegramNotificationMessageBuilder
+                String builtNotificationMessage = notificationMessageBuilder
                         .buildNotificationMessage(booking);
                 telegramNotificationService.sendMessage(builtNotificationMessage);
             });

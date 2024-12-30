@@ -55,6 +55,10 @@ import com.spring.booking.accommodationbookingservice.dto.payment.PaymentCancelR
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentConfirmResponse;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentCreateRequestDto;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentResponse;
+import com.spring.booking.accommodationbookingservice.dto.role.RoleUpdateRequestDto;
+import com.spring.booking.accommodationbookingservice.dto.user.UserRegistrationRequestDto;
+import com.spring.booking.accommodationbookingservice.dto.user.UserResponse;
+import com.spring.booking.accommodationbookingservice.dto.user.UserUpdateRequestDto;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.MalformedURLException;
@@ -63,11 +67,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import com.spring.booking.accommodationbookingservice.dto.role.RoleUpdateRequestDto;
-import com.spring.booking.accommodationbookingservice.dto.user.UserRegistrationRequestDto;
-import com.spring.booking.accommodationbookingservice.dto.user.UserResponse;
-import com.spring.booking.accommodationbookingservice.dto.user.UserUpdateRequestDto;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.PageRequest;
 
@@ -282,7 +281,6 @@ public final class TestUtil {
     public static RoleUpdateRequestDto createRoleUpdateDto() {
         return new RoleUpdateRequestDto(Set.of(RoleName.ROLE_CUSTOMER));
     }
-
 
     public static UserUpdateRequestDto createUserUpdateDto() {
         return new UserUpdateRequestDto(CORRECT_USER_EMAIL,

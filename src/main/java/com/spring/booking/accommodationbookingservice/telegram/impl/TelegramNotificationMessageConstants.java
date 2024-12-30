@@ -9,7 +9,6 @@ public final class TelegramNotificationMessageConstants {
             🛌Type: %s
             🌎Location: country=%s, city=%s, street=%s, postalCode=%s
             🏠Size: %s
-            📦Amenities: %s
             💶DailyRate: %s
             🟢Availability: %d""";
 

@@ -5,7 +5,7 @@ import com.spring.booking.accommodationbookingservice.dto.accommodation.Accommod
 import com.spring.booking.accommodationbookingservice.dto.booking.BookingResponse;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentConfirmResponse;
 
-public interface TelegramNotificationMessageBuilder {
+public interface NotificationMessageBuilder {
     String buildNotificationMessage(AccommodationResponse response);
 
     String buildNotificationMessage(BookingResponse response);

@@ -9,8 +9,8 @@ import com.spring.booking.accommodationbookingservice.exception.EntityNotFoundEx
 import com.spring.booking.accommodationbookingservice.mapper.AccommodationMapper;
 import com.spring.booking.accommodationbookingservice.repository.AccommodationRepository;
 import com.spring.booking.accommodationbookingservice.service.accommodation.AccommodationService;
-import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageBuilder;
-import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
+import com.spring.booking.accommodationbookingservice.telegram.NotificationMessageBuilder;
+import com.spring.booking.accommodationbookingservice.telegram.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,17 +23,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccommodationServiceImpl implements AccommodationService {
     private final AccommodationRepository accommodationRepository;
     private final AccommodationMapper accommodationMapper;
-    private final TelegramNotificationService telegramNotificationService;
-    private final TelegramNotificationMessageBuilder telegramNotificationMessageBuilder;
+    private final NotificationService notificationService;
+    private final NotificationMessageBuilder notificationMessageBuilder;
 
     @Override
     public AccommodationResponse create(AccommodationCreateRequestDto createRequestDto) {
         Accommodation accommodation = accommodationMapper.toModel(createRequestDto);
         AccommodationResponse response = accommodationMapper
                 .toResponse(accommodationRepository.save(accommodation));
-        String builtNotificationMessage = telegramNotificationMessageBuilder
+        String builtNotificationMessage = notificationMessageBuilder
                 .buildNotificationMessage(response);
-        telegramNotificationService.sendMessage(builtNotificationMessage);
+        notificationService.sendMessage(builtNotificationMessage);
         return response;
     }
 

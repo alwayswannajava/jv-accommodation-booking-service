@@ -9,17 +9,17 @@ import com.spring.booking.accommodationbookingservice.domain.Booking;
 import com.spring.booking.accommodationbookingservice.dto.accommodation.AccommodationResponse;
 import com.spring.booking.accommodationbookingservice.dto.booking.BookingResponse;
 import com.spring.booking.accommodationbookingservice.dto.payment.PaymentConfirmResponse;
-import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageBuilder;
+import com.spring.booking.accommodationbookingservice.telegram.NotificationMessageBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TelegramNotificationMessageBuilderImpl implements TelegramNotificationMessageBuilder {
+public class NotificationMessageBuilderImpl implements NotificationMessageBuilder {
     @Override
     public String buildNotificationMessage(AccommodationResponse response) {
         return String.format(TELEGRAM_CREATE_ACCOMMODATION_NOTIFICATION_MESSAGE,
                 response.id(), response.type(), response.address().getCountry(),
                 response.address().getCity(), response.address().getStreet(),
-                response.address().getPostalCode(), response.size(), response.amenities(),
+                response.address().getPostalCode(), response.size(),
                 response.dailyRate(), response.availability());
     }
 

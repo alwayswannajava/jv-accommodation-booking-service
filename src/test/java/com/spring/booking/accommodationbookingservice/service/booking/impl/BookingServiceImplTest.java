@@ -23,7 +23,7 @@ import com.spring.booking.accommodationbookingservice.exception.EntityNotFoundEx
 import com.spring.booking.accommodationbookingservice.mapper.BookingMapper;
 import com.spring.booking.accommodationbookingservice.repository.AccommodationRepository;
 import com.spring.booking.accommodationbookingservice.repository.BookingRepository;
-import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageBuilder;
+import com.spring.booking.accommodationbookingservice.telegram.NotificationMessageBuilder;
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
 import com.spring.booking.accommodationbookingservice.util.TestUtil;
 import java.util.List;
@@ -52,7 +52,7 @@ class BookingServiceImplTest {
     private TelegramNotificationService telegramNotificationService;
 
     @Mock
-    private TelegramNotificationMessageBuilder telegramNotificationMessageBuilder;
+    private NotificationMessageBuilder notificationMessageBuilder;
 
     @Mock
     private BookingMapper bookingMapper;
@@ -87,7 +87,7 @@ class BookingServiceImplTest {
         when(bookingMapper.toResponse(booking)).thenReturn(bookingResponse);
         when(accommodationRepository.findByIdFetchAddressAndAmenities(CORRECT_ACCOMMODATION_ID))
                 .thenReturn(Optional.ofNullable(accommodation));
-        when(telegramNotificationMessageBuilder.buildNotificationMessage(bookingResponse))
+        when(notificationMessageBuilder.buildNotificationMessage(bookingResponse))
                 .thenReturn(TELEGRAM_NOTIFICATION_CREATE_BOOKING_MESSAGE);
 
         BookingResponse expected = bookingResponse;
@@ -96,8 +96,8 @@ class BookingServiceImplTest {
         assertEquals(expected, actual);
 
         verify(bookingRepository).save(booking);
-        verify(telegramNotificationMessageBuilder).buildNotificationMessage(bookingResponse);
-        verify(telegramNotificationService).sendMessage(telegramNotificationMessageBuilder
+        verify(notificationMessageBuilder).buildNotificationMessage(bookingResponse);
+        verify(telegramNotificationService).sendMessage(notificationMessageBuilder
                 .buildNotificationMessage(bookingResponse));
     }
 
