@@ -75,7 +75,6 @@ class UserServiceImplTest {
         user = TestUtil.createUser();
     }
 
-
     @Test
     @DisplayName("Test register() method")
     void register_ValidUserRegistrationRequestDto_ReturnUserResponse()

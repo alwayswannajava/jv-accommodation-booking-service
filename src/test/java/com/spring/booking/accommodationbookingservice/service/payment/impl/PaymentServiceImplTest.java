@@ -31,7 +31,7 @@ import com.spring.booking.accommodationbookingservice.repository.AccommodationRe
 import com.spring.booking.accommodationbookingservice.repository.BookingRepository;
 import com.spring.booking.accommodationbookingservice.repository.PaymentRepository;
 import com.spring.booking.accommodationbookingservice.service.payment.StripeClient;
-import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageBuilder;
+import com.spring.booking.accommodationbookingservice.telegram.NotificationMessageBuilder;
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
 import com.spring.booking.accommodationbookingservice.util.TestUtil;
 import com.stripe.exception.StripeException;
@@ -67,7 +67,7 @@ class PaymentServiceImplTest {
     private StripeClient stripeClient;
 
     @Mock
-    private TelegramNotificationMessageBuilder telegramNotificationMessageBuilder;
+    private NotificationMessageBuilder notificationMessageBuilder;
 
     @Mock
     private TelegramNotificationService telegramNotificationService;
@@ -180,7 +180,7 @@ class PaymentServiceImplTest {
         when(stripeClient.isPaymentSuccess()).thenReturn(true);
         when(paymentRepository.findBySessionId(CORRECT_SESSION_ID))
                 .thenReturn(Optional.ofNullable(payment));
-        when(telegramNotificationMessageBuilder.buildNotificationMessage(confirmResponse))
+        when(notificationMessageBuilder.buildNotificationMessage(confirmResponse))
                 .thenReturn(CONFIRM_PAYMENT_MESSAGE);
 
         PaymentConfirmResponse expected = confirmResponse;
@@ -189,7 +189,7 @@ class PaymentServiceImplTest {
 
         verify(stripeClient).buildStripeConfirmPayment();
         verify(stripeClient).isPaymentSuccess();
-        verify(telegramNotificationMessageBuilder).buildNotificationMessage(confirmResponse);
+        verify(notificationMessageBuilder).buildNotificationMessage(confirmResponse);
         verify(telegramNotificationService).sendMessage(CONFIRM_PAYMENT_MESSAGE);
         verifyNoMoreInteractions(paymentRepository, stripeClient);
     }

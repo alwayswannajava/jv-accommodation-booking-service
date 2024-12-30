@@ -16,7 +16,7 @@ import com.spring.booking.accommodationbookingservice.repository.BookingReposito
 import com.spring.booking.accommodationbookingservice.repository.PaymentRepository;
 import com.spring.booking.accommodationbookingservice.service.payment.PaymentService;
 import com.spring.booking.accommodationbookingservice.service.payment.StripeClient;
-import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageBuilder;
+import com.spring.booking.accommodationbookingservice.telegram.NotificationMessageBuilder;
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
@@ -40,7 +40,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
     private final StripeClient stripeClient;
-    private final TelegramNotificationMessageBuilder telegramNotificationMessageBuilder;
+    private final NotificationMessageBuilder notificationMessageBuilder;
     private final TelegramNotificationService telegramNotificationService;
 
     @Override
@@ -82,7 +82,7 @@ public class PaymentServiceImpl implements PaymentService {
                 payment.getBookingId(),
                 payment.getStatus(),
                 payment.getAmountToPay());
-        String builtNotificationMessage = telegramNotificationMessageBuilder
+        String builtNotificationMessage = notificationMessageBuilder
                 .buildNotificationMessage(paymentConfirmResponse);
         telegramNotificationService.sendMessage(builtNotificationMessage);
         return paymentConfirmResponse;

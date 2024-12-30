@@ -11,7 +11,7 @@ import com.spring.booking.accommodationbookingservice.mapper.BookingMapper;
 import com.spring.booking.accommodationbookingservice.repository.AccommodationRepository;
 import com.spring.booking.accommodationbookingservice.repository.BookingRepository;
 import com.spring.booking.accommodationbookingservice.service.booking.BookingService;
-import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationMessageBuilder;
+import com.spring.booking.accommodationbookingservice.telegram.NotificationMessageBuilder;
 import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final BookingMapper bookingMapper;
     private final TelegramNotificationService telegramNotificationService;
-    private final TelegramNotificationMessageBuilder telegramNotificationMessageBuilder;
+    private final NotificationMessageBuilder notificationMessageBuilder;
 
     @Override
     public BookingResponse create(Long userId, BookingCreateRequestDto createRequestDto)
@@ -37,7 +37,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setUserId(userId);
         booking.setStatus(Status.PENDING);
         BookingResponse response = bookingMapper.toResponse(bookingRepository.save(booking));
-        String builtNotificationMessage = telegramNotificationMessageBuilder
+        String builtNotificationMessage = notificationMessageBuilder
                 .buildNotificationMessage(response);
         telegramNotificationService.sendMessage(builtNotificationMessage);
         return response;
@@ -93,7 +93,7 @@ public class BookingServiceImpl implements BookingService {
                         .orElseThrow(() -> new EntityNotFoundException("Booking with id: "
                                 + bookingId
                                 + " not found "));
-        String builtNotificationMessage = telegramNotificationMessageBuilder
+        String builtNotificationMessage = notificationMessageBuilder
                 .buildNotificationMessage(booking);
         telegramNotificationService.sendMessage(builtNotificationMessage);
         bookingRepository.deleteById(bookingId);
