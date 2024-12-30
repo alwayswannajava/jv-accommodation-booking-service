@@ -12,7 +12,8 @@ import com.spring.booking.accommodationbookingservice.repository.AccommodationRe
 import com.spring.booking.accommodationbookingservice.repository.BookingRepository;
 import com.spring.booking.accommodationbookingservice.service.booking.BookingService;
 import com.spring.booking.accommodationbookingservice.telegram.NotificationMessageBuilder;
-import com.spring.booking.accommodationbookingservice.telegram.TelegramNotificationService;
+import com.spring.booking.accommodationbookingservice.telegram.NotificationService;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class BookingServiceImpl implements BookingService {
     private final AccommodationRepository accommodationRepository;
     private final BookingRepository bookingRepository;
     private final BookingMapper bookingMapper;
-    private final TelegramNotificationService telegramNotificationService;
+    private final NotificationService notificationService;
     private final NotificationMessageBuilder notificationMessageBuilder;
 
     @Override
@@ -39,7 +40,7 @@ public class BookingServiceImpl implements BookingService {
         BookingResponse response = bookingMapper.toResponse(bookingRepository.save(booking));
         String builtNotificationMessage = notificationMessageBuilder
                 .buildNotificationMessage(response);
-        telegramNotificationService.sendMessage(builtNotificationMessage);
+        notificationService.sendMessage(builtNotificationMessage);
         return response;
     }
 
@@ -95,7 +96,7 @@ public class BookingServiceImpl implements BookingService {
                                 + " not found "));
         String builtNotificationMessage = notificationMessageBuilder
                 .buildNotificationMessage(booking);
-        telegramNotificationService.sendMessage(builtNotificationMessage);
+        notificationService.sendMessage(builtNotificationMessage);
         bookingRepository.deleteById(bookingId);
     }
 
